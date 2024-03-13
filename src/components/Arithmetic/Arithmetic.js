@@ -15,7 +15,7 @@ const Arithmetic = () => {
     denominator2 : 1
   })
 
-  
+  const [result, setResult] = useState(false)
 
   const [inputs, setInputs] = useState({
     numerator: 1,
@@ -62,20 +62,25 @@ const Arithmetic = () => {
 
       const inputResult = inputs.numerator/inputs.denominator;
 
-      console.log(checkResult, inputResult)
+      if(checkResult===inputResult){
+        setResult(true)
+      }
+      else{
+        setResult(false)
+      }
 
-     
+      setShowCheckModal(true)
   }
 
   return (
     <div className='px-[20px] w-screen flex flex-col pt-12'>
         <div className='buttons-div w-100 h-16 bg-gray-200 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <button className='p-2 px-4 rounded-sm  bg-gray-100'>Addition</button>
-              <button className='p-2 px-4 rounded-sm ml-4 bg-gray-100'>Subtraction</button>
-              <button className='p-2 px-4 rounded-sm ml-4   bg-gray-100'>Division</button>
-              <button className='p-2 px-4 rounded-sm ml-4   bg-gray-100'>Multiplication</button>
-              <button className='p-2 px-4 rounded-sm ml-4   bg-gray-100'>Mixed</button>
+              <button className='p-2 px-4 rounded-md  bg-white hover:shadow-lg  hover:shadow-slate-500'>Addition</button>
+              <button className='p-2 px-4 rounded-md ml-4 bg-white hover:shadow-lg  hover:shadow-slate-500'>Subtraction</button>
+              <button className='p-2 px-4 rounded-md ml-4   bg-white hover:shadow-lg  hover:shadow-slate-500'>Division</button>
+              <button className='p-2 px-4 rounded-md ml-4   bg-white hover:shadow-lg  hover:shadow-slate-500'>Multiplication</button>
+              <button className='p-2 px-4 rounded-md ml-4   bg-white hover:shadow-lg  hover:shadow-slate-500'>Mixed</button>
             </div>
        
         </div>
@@ -143,7 +148,7 @@ const Arithmetic = () => {
                                        <div class="border-t border-2  border-gray-600   w-20 mx-auto"></div>
                                     </tr>
                                     <tr>
-                                     <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='w-20 h-8 rounded-sm bg-gray-100'/>
+                                     <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='w-20 text-center h-8 rounded-sm bg-gray-100'/>
                                     </tr>
                                </tbody>
                              </table>
@@ -161,15 +166,15 @@ const Arithmetic = () => {
 
         <div className='buttons-div w-100 h-16 bg-gray-200 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <button className='p-2 px-4 rounded-sm  bg-gray-100'>Prebuild Sheet</button>
-              <button onClick={()=>setShowRandom(true)}  className='p-2 px-4 rounded-sm ml-4 bg-gray-100'>Random Sheet</button>
-              <button onClick={()=>setShowCheckModal(true)}>show</button>
+              <button className='p-2 px-4 rounded-md  bg-white hover:shadow-lg  hover:shadow-slate-500'>Prebuild Sheet</button>
+              <button onClick={()=>setShowRandom(true)}  className='p-2 px-4 rounded-md ml-4 bg-white hover:shadow-lg  hover:shadow-slate-500'>Random Sheet</button>
+              
             </div>
        
         </div>
 
         <RenderCards showRandom={showRandom}/>
-        <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal}/>
+        <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal} result={result}/>
     </div>
   )
 }
@@ -180,6 +185,7 @@ export default Arithmetic
 export const  RenderCards = ({showRandom}) => {
  const [randomSheet, setRadomSheet] = useState([])
  const [showCheckModal, setShowCheckModal] = useState(false)
+ const [result, setResult] = useState(false)
 
 const [inputs, setInputs] = useState({
   numerator: 1,
@@ -206,6 +212,26 @@ useEffect(() => {
     });
   }
 } 
+
+
+const handleSubmit = (randomNum) => {
+  const checkDeno = randomNum.denominator1 * randomNum.denominator2;
+
+  const checkNum = (randomNum.numerator1*randomNum.denominator2) + (randomNum.numerator2*randomNum.denominator1);
+
+  const checkResult = checkNum/checkDeno
+
+  const inputResult = inputs.numerator/inputs.denominator;
+
+  if(checkResult===inputResult){
+    setResult(true)
+  }
+  else{
+    setResult(false)
+  }
+
+  setShowCheckModal(true)
+}
 
  if(showRandom)
 
@@ -272,7 +298,7 @@ useEffect(() => {
                                           <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                         </tr>
                                         <tr>
-                                        <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='w-20 h-8 rounded-sm bg-gray-100'/>
+                                        <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='w-20 h-8 text-center rounded-sm bg-gray-100'/>
                                         </tr>
                                   </tbody>
                                 </table>
@@ -280,18 +306,18 @@ useEffect(() => {
                             </tr>
                           </table>
                          <div className='mt-6 w-full flex justify-center'>
-                            <button onClick={()=>setShowCheckModal(true)}  className=' w-full rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>Submit</button>
+                            <button onClick={()=>handleSubmit(randomNum)}  className=' w-full rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>Submit</button>
                           </div>
                         </div>
                       ))} 
               </div>
-              <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal}/>
+              <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal} result={result}/>
     </div>
   )
                       
 };
 
-const CheckModal = ({showCheckModal, setShowCheckModal}) => {
+const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
   if(showCheckModal)
   return(
   <div className='fixed inset-0 bg-black  bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
@@ -302,10 +328,12 @@ const CheckModal = ({showCheckModal, setShowCheckModal}) => {
                    <p class='text-xl text-gray-200 mt-1  '>&#x2717;</p>
                </div>
                <div className='w-full flex justify-center mb-6'>
-               <h2 className='text-[50px] text-green-800  mt-2'>Correct</h2>
+                {result? <h2 className='text-[50px] text-green-800  mt-2'>Correct!</h2> :
+                         <h2 className='text-[50px] text-red-600  mt-2'>Wrong!</h2>
+                }
                </div>
                <div className='flex justify-end'>
-                 <button onClick={()=>setShowCheckModal(false)} className='bg-green-800 hover:bg-green-700 mx-2 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Try again</button>
+                 <button onClick={()=>setShowCheckModal(false)} className='bg-green-800 hover:bg-green-700 mx-2 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>{result? 'Try more' : 'Try again'}</button>
                  <button className='bg-orange-600 hover:bg-orange-500 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Solution</button>
                </div>
    
