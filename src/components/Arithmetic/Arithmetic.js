@@ -37,7 +37,7 @@ const Arithmetic = () => {
 
   const [result, setResult] = useState(false)
   const [difficulty, setDifficulty] =  useState(1)
-  const [operation, setOperation] = useState(2)
+  const [operation, setOperation] = useState(1)
 
   const [inputs, setInputs] = useState({
     numerator: 1,
@@ -102,7 +102,7 @@ const Arithmetic = () => {
 
   const handleCheck = () => {
 
-     if (operation==='addition'){
+     if (operation===1){
             const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
             const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
@@ -112,7 +112,7 @@ const Arithmetic = () => {
             var inputResult = inputs.numerator/inputs.denominator;
      }
 
-    if (operation==='subraction'){
+    if (operation===2){
           const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
           const checkNum = (randomNums.numerator1*randomNums.denominator2) - (randomNums.numerator2*randomNums.denominator1);
@@ -122,7 +122,7 @@ const Arithmetic = () => {
           var inputResult = inputs.numerator/inputs.denominator;
     }
 
-    if (operation==='multiplication') {
+    if (operation===3) {
           const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
           const checkNum =  randomNums.numerator1 * randomNums.numerator2;
@@ -148,11 +148,11 @@ const Arithmetic = () => {
     <div className='px-[20px] w-screen flex flex-col pt-12'>
         <div className='buttons-div w-100 h-16 bg-slate-50 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <button className='btn-tab'>Addition</button>
-              <button className='btn-tab'>Subtraction</button>
-              <button className='btn-tab'>Division</button>
-              <button className='btn-tab'>Multiplication</button>
-              <button className='btn-tab'>Mixed</button>
+              <button onClick={()=>setOperation(1)} className={`btn-tab ${operation === 1 ? 'btn-selected' : ''}`}>Addition</button>
+              <button onClick={()=>setOperation(2)} className={`btn-tab ${operation === 2 ? 'btn-selected' : ''}`}>Subtraction</button>
+              <button onClick={()=>setOperation(3)} className={`btn-tab ${operation === 3 ? 'btn-selected' : ''}`}>Multiplication</button>
+              <button onClick={()=>setOperation(3)} className={`btn-tab ${operation === 4 ? 'btn-selected' : ''}`}>Division</button>
+              <button className={`btn-tab ${operation === 5 ? 'btn-selected' : ''}`}>Mixed</button>
             </div>
        
         </div>

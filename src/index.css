@@ -6,7 +6,10 @@
    @apply p-2 px-4 rounded-md border mx-2 font-thin border-gray-400   bg-white hover:shadow-lg  hover:shadow-slate-300
 }
 
-
+.btn-selected {
+ @apply bg-green-800 text-white
+  /* Add any other styles you want for the selected button */
+}
 
 .card-drill {
    @apply  p-12 h-96  rounded-md mt-8 bg-slate-50
