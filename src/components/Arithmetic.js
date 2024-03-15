@@ -46,6 +46,7 @@ const Arithmetic = () => {
 
   const [showRandom, setShowRandom] = useState(false)
   const [showCheckModal, setShowCheckModal] = useState(false)
+  
 
 
  
@@ -431,6 +432,11 @@ const handleSubmit = (randomNum) => {
 // ========================================================================================
 
 const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
+
+  
+      
+ const [showSolutionModal, setShowSolutionModal] = useState(false)
+
   if(showCheckModal)
   return(
   <div className='fixed inset-0 bg-black  bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
@@ -447,10 +453,33 @@ const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
                </div>
                <div className='flex justify-end'>
                  <button onClick={()=>setShowCheckModal(false)} className='bg-green-800 hover:bg-green-700 mx-2 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>{result? 'Try more' : 'Try again'}</button>
-                 <button className='bg-orange-600 hover:bg-orange-500 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Solution</button>
+                 <button onClick={()=>setShowSolutionModal(true)} className='bg-orange-600 hover:bg-orange-500 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Solution</button>
                </div>
    
        </div>
+       <SolutionModal showSolutionModal={showSolutionModal}/>
   </div>
+  )
+}
+
+// ========================================================================================
+// =============================== Solution modal    =====================================
+// ========================================================================================
+
+const SolutionModal = ({showSolutionModal, setShowSolutionModal}) => {
+  if(showSolutionModal)
+  console.log(showSolutionModal)
+  return(
+  <div className='fixed inset-0 bg-black  bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
+
+        <div className='bg-white rounded-md z-40 w-96  p-4  mb-[200px] '> 
+                         <h2 className='text-[50px] text-green-800  mt-2'>Solution</h2> :
+                         
+                
+               </div>
+
+        </div>
+   
+       
   )
 }
