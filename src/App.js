@@ -1,13 +1,20 @@
-import Arithmetic from "./components/Arithmetic/Arithmetic";
-import Sidebar from "./components/Sidebar/Sidebar";
+import Arithmetic from "./components/Arithmetic";
+import Navbar from "./components/Navbar";
+import Sidebar from "./components/Sidebar";
 
 
 function App() {
   return (
     <div className="">
-       <div className="flex flex-row">
-          <Sidebar/>
-          <Arithmetic/>
+        <Navbar/>
+       <div className="flex  flex-row ">
+           <div className="w-1/5">
+              <Sidebar/>
+           </div>
+          <div className="w-4/5">
+          
+              <Arithmetic/>
+          </div>
       
       </div>
      

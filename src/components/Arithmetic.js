@@ -145,7 +145,7 @@ const Arithmetic = () => {
   }
 
   return (
-    <div className='px-[20px] w-screen flex flex-col pt-12'>
+    <div className='px-[20px] w-full flex flex-col pt-12 mt-[30px]'>
         <div className='buttons-div w-100 h-16 bg-slate-50 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
               <button onClick={()=>setOperation(1)} className={`btn-tab ${operation === 1 ? 'btn-selected' : ''}`}>Addition</button>
