@@ -46,6 +46,7 @@ const Arithmetic = () => {
 
   const [showRandom, setShowRandom] = useState(false)
   const [showCheckModal, setShowCheckModal] = useState(false)
+  const [showSolutionModal, setShowSolutionModal]= useState(false)
   
 
 
@@ -66,12 +67,12 @@ const Arithmetic = () => {
 
     switch (difficulty) {
       case 1: 
-          min = 2;
-          max = 10;
+          min = 1;
+          max = 9;
         break;
 
       case 2:    
-          min = 11;
+          min = 1;
           max = 99;
         break;
 
@@ -80,9 +81,14 @@ const Arithmetic = () => {
           max = 999;
       break;
 
+      case 4:
+        min = -99;
+        max =  99;
+    break;
+
       default:
-          min = 2;
-          max = 10;
+          min = 1;
+          max = 9;
         break;
     }
 
@@ -102,41 +108,71 @@ const Arithmetic = () => {
  
 
   const handleCheck = () => {
+   
+    if(operation===1){
+                const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
-     if (operation===1){
+                const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
+
+                var checkResult = checkNum/checkDeno
+
+                var inputResult = inputs.numerator/inputs.denominator;
+
+                if(checkResult===inputResult){
+                  setResult(true)
+                  console.log("result  true/false is ", result)
+                }
+                else{
+                  setResult(false)
+                }
+
+                console.log("check result", checkResult,"input result", inputResult)
+
+                console.log("num1", randomNums.numerator1, "num2", randomNums.numerator2, "dem1", randomNums.denominator1, "dem2", randomNums.denominator2)
+
+                console.log("checkNum", checkNum, "checkDeno", checkDeno)
+
+        }
+    /////////////////////////////////////////////////////////////////////////////////////////// 
+
+    if(difficulty===2){
+      if (operation===1){
+              const checkDeno = randomNums.numerator1 + randomNums.numerator2;
+
+              const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
+
+              var checkResult = checkNum/checkDeno
+
+              var inputResult = inputs.numerator/inputs.denominator;
+
+              console.log(checkResult, inputResult)
+      }
+
+      if (operation===2){
             const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
-            const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
+            const checkNum = (randomNums.numerator1*randomNums.denominator2) - (randomNums.numerator2*randomNums.denominator1);
 
             var checkResult = checkNum/checkDeno
 
             var inputResult = inputs.numerator/inputs.denominator;
-     }
+      }
 
-    if (operation===2){
-          const checkDeno = randomNums.denominator1 * randomNums.denominator2;
+      if (operation===3) {
+            const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
-          const checkNum = (randomNums.numerator1*randomNums.denominator2) - (randomNums.numerator2*randomNums.denominator1);
+            const checkNum =  randomNums.numerator1 * randomNums.numerator2;
 
-          var checkResult = checkNum/checkDeno
+            var checkResult = checkNum/checkDeno
 
-          var inputResult = inputs.numerator/inputs.denominator;
+            var inputResult = inputs.numerator/inputs.denominator;
+      }
     }
 
-    if (operation===3) {
-          const checkDeno = randomNums.denominator1 * randomNums.denominator2;
-
-          const checkNum =  randomNums.numerator1 * randomNums.numerator2;
-
-          var checkResult = checkNum/checkDeno
-
-          var inputResult = inputs.numerator/inputs.denominator;
-    }
-   
-      
-
+    //////////////////////////////////////////////////////////////////////////////////////////
       if(checkResult===inputResult){
         setResult(true)
+        console.log("result  true/false is ", result)
       }
       else{
         setResult(false)
@@ -196,77 +232,220 @@ const Arithmetic = () => {
                 <h5 className='sub-hd'>Solve this fraction</h5>
 
                 <div className='math  flex justify-center mt-6 '>
-                      <table className='digit'>
-                        <tr className=''>
-                          <td className='first-col px-4'>
-                             <table className=''>
-                               <tbody className=''>
-                                    <tr className=''>
-                                      {randomNums.numerator1}
-                                    </tr>
-                                    <tr className='flex items-center mt-4 mb-4'>
-                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator1}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
 
-                          <td className='opertor px-4'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                      {getOperator(operation)}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
+                          { (difficulty===1 || difficulty===2) &&
+                              <table className='digit'>
+                              <tr className=''>
+                                <td className='first-col px-4'>
+                                    <table className=''>
+                                      <tbody className=''>
+                                          <tr className=''>
+                                            {randomNums.numerator1}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                              <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator1}
+                                          </tr>
+                                      </tbody>
+                                    </table>
+                                </td>
 
-                          <td className='second-col px-4'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                      {randomNums.numerator2}
-                                    </tr>
-                                    <tr className='flex items-center mt-4 mb-4'>
-                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator2}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
+                                <td className='opertor px-4'>
+                                    <table>
+                                      <tbody>
+                                          <tr>
+                                            {getOperator(operation)}
+                                          </tr>
+                                      </tbody>
+                                    </table>
+                                </td>
 
-                          <td className='= px-6'>
-                            <tr>=</tr>
-                          </td>
+                                <td className='second-col px-4'>
+                                    <table>
+                                      <tbody>
+                                          <tr>
+                                            {randomNums.numerator2}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                              <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator2}
+                                          </tr>
+                                      </tbody>
+                                    </table>
+                                </td>
 
-                          <td className='inputs px-4'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                       <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
-                                    </tr>
-                                    <tr className='flex items-center mt-4 mb-4'>
-                                       <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                     <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-                        </tr>
-                      </table>
+                                <td className='= px-6'>
+                                  <tr>=</tr>
+                                </td>
+
+                                <td className='inputs px-4'>
+                                    <table>
+                                      <tbody>
+                                          <tr>
+                                              <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                              <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                          </tr>
+                                      </tbody>
+                                    </table>
+                                </td>
+                              </tr>
+                              </table>
+                          }
+                    {/* //////////////////////////////////////////////////////////////////////////////////////////// */}
+                          {/* {
+                          difficulty===2 &&
+                            <table className='digit'>
+                              <tr className=''>
+                                <td className='first-col px-4'>
+                                  <table className=''>
+                                    <tbody className=''>
+                                          <tr className=''>
+                                            {randomNums.numerator1}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator1}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='opertor px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            {getOperator(operation)}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='second-col px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            {randomNums.numerator2}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator2}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='= px-6'>
+                                  <tr>=</tr>
+                                </td>
+
+                                <td className='inputs px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          } */}
+
+                     {/* //////////////////////////////////////////////////////////////////////////////////////////// */}
+                          {
+                          difficulty===4 &&
+                            <table className='digit'>
+                              <tr className=''>
+                                <td className='first-col px-4'>
+                                  <table className=''>
+                                    <tbody className=''>
+                                          <tr className=''>
+                                            {randomNums.numerator1}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator1}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='opertor px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            {getOperator(operation)}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='second-col px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            {randomNums.numerator2}
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                            {randomNums.denominator2}
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+
+                                <td className='= px-6'>
+                                  <tr>=</tr>
+                                </td>
+
+                                <td className='inputs px-4'>
+                                  <table>
+                                    <tbody>
+                                          <tr>
+                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                          </tr>
+                                          <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+                            </table>
+                          }
                 </div>
 
                 <div className='buttons w-full   flex flex-row justify-center mt-14'>
                       <button onClick={handleCheck} className='btn-green'>Check</button>
 
                       <button onClick={handleNext} className='btn-orange'>Next</button>
+                      
                 </div>
         </div>
 
@@ -280,7 +459,8 @@ const Arithmetic = () => {
         </div>
 
         <RenderCards showRandom={showRandom}/>
-        <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal} result={result}/>
+        <CheckModal showCheckModal={showCheckModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
+        <SolutionModal showSolutionModal={showSolutionModal} randomNums={randomNums} operation={operation}/>
     </div>
   )
 }
@@ -431,11 +611,11 @@ const handleSubmit = (randomNum) => {
 // ============ Checking modal for both main drill and radom sheet     ====================
 // ========================================================================================
 
-const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
+const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, result}) => {
 
   
       
- const [showSolutionModal, setShowSolutionModal] = useState(false)
+ 
 
   if(showCheckModal)
   return(
@@ -457,7 +637,7 @@ const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
                </div>
    
        </div>
-       <SolutionModal showSolutionModal={showSolutionModal}/>
+       
   </div>
   )
 }
@@ -466,20 +646,244 @@ const CheckModal = ({showCheckModal, setShowCheckModal, result}) => {
 // =============================== Solution modal    =====================================
 // ========================================================================================
 
-const SolutionModal = ({showSolutionModal, setShowSolutionModal}) => {
-  if(showSolutionModal)
-  console.log(showSolutionModal)
-  return(
-  <div className='fixed inset-0 bg-black  bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
+// const SolutionModal = ({showSolutionModal, setShowSolutionModal}) => {
+//   if(showSolutionModal)
+//   console.log(showSolutionModal)
+//   return(
+//   <div className='fixed inset-0 bg-black w-scree h-full bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
 
-        <div className='bg-white rounded-md z-40 w-96  p-4  mb-[200px] '> 
-                         <h2 className='text-[50px] text-green-800  mt-2'>Solution</h2> :
+//         <div className='bg-white rounded-md z-40 w-96  p-4  mb-[200px] '> 
+//                          <h2 className='text-[50px] text-green-800  mt-2'>Solution</h2> :
                          
                 
-               </div>
+//                </div>
 
-        </div>
+//         </div>
    
        
+//   )
+// }
+
+const SolutionModal = ({showSolutionModal, randomNums, operation}) => {
+
+  if(showSolutionModal)
+ {
+  return (
+    <div className=' absolute inset-0 pt-48 bg-transparent w-scree h-screen backdrop-blur-sm flex justify-center items-center '>
+
+      <div className='bg-white rounded-md z-40 w-96  p-4  mb-[200px]'>
+            <div className='text-center w-full'>
+              <h2 className='text-[20px] font-semibold text-orange-500 font-thin'>Solution</h2>
+            </div>
+
+            <div>
+              <h2>Your answer:</h2>
+              <table className='solution-digit'>
+                        <tr className=''>
+                          <td className='= px-6'>
+                            <tr>=</tr>
+                          </td>
+                          <td className='first-col px-4'>
+                             <table className=''>
+                               <tbody className=''>
+                                    <tr className=''>
+                                      {randomNums.numerator1}
+                                    </tr>
+                                    <tr className='flex items-center mt-4 mb-4'>
+                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                      {randomNums.denominator1}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                          <td className='opertor px-4'>
+                             <table>
+                               <tbody>
+                                    <tr>
+                                      {getOperator(operation)}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                          <td className='second-col px-4'>
+                             <table>
+                               <tbody>
+                                    <tr>
+                                      {randomNums.numerator2}
+                                    </tr>
+                                    <tr className='flex items-center mt-4 mb-4'>
+                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                      {randomNums.denominator2}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                         
+
+                          
+                        </tr>
+              </table>
+            </div>
+
+            <div>
+               <h2>Solution:</h2>
+       {/**========================  first row =========================================**/}
+               <table className='solution-digit'>
+                        <tr className=''>
+                          <td className='= px-2'>
+                            <tr>=</tr>
+                          </td>
+                          <td className='first-col px-1'>
+                             <table className=''>
+                               <tbody className=''>
+                                    <tr className=''>
+                                      {randomNums.numerator1}
+                                    </tr>
+                                    <tr className='flex items-center mt-1 mb-1'>
+                                       <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                      {randomNums.denominator1}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                          <td className='opertor px-1'>
+                             <table>
+                               <tbody>
+                                    <tr>
+                                      {getOperator(operation)}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                          <td className='second-col px-1'>
+                             <table>
+                               <tbody>
+                                    <tr>
+                                      {randomNums.numerator2}
+                                    </tr>
+                                    <tr className='flex items-center mt-1 mb-1'>
+                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                      {randomNums.denominator2}
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+
+                         
+
+                          
+                        </tr>
+              </table>
+       {/**========================  second row =========================================**/}
+       <table className='solution-digit'>
+                        <tr className=''>
+                          <td className='= px-2'>
+                            <tr>=</tr>
+                          </td>
+                          <td className='first-col px-1'>
+                             <table className=''>
+                               <tbody className=''>
+                                    <tr className=''>
+                                      (  {randomNums.numerator1} * {randomNums.denominator2} )   +   ( {randomNums.denominator1} * {randomNums.numerator2} )
+                                    </tr>
+
+                                    <tr className='flex items-center mt-1 mb-1'>
+                                       <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                     ( {randomNums.denominator1} * {randomNums.denominator2} )
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+                        </tr>
+        </table>
+         {/**========================  third row =========================================**/}
+       <table className='solution-digit'>
+                        <tr className=''>
+                          <td className='= px-2'>
+                            <tr>=</tr>
+                          </td>
+                          <td className='first-col px-1'>
+                             <table className=''>
+                               <tbody className=''>
+                                    <tr className=''>
+                                      (  {randomNums.numerator1 * randomNums.denominator2} )   +   ( {randomNums.denominator1 * randomNums.numerator2} )
+                                    </tr>
+
+                                    <tr className='flex items-center mt-1 mb-1'>
+                                       <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
+                                    </tr>
+                                    <tr>
+                                     ( {randomNums.denominator1 * randomNums.denominator2} )
+                                    </tr>
+                               </tbody>
+                             </table>
+                          </td>
+                        </tr>
+        </table>
+
+         {/**========================  4th row =========================================**/}
+            <table className='solution-digit'>
+                              <tr className=''>
+                                <td className='= px-2'>
+                                  <tr>=</tr>
+                                </td>
+                                <td className='first-col px-1'>
+                                  <table className=''>
+                                    <tbody className=''>
+                                          <tr className=''>
+                                             {(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} 
+                                          </tr>
+
+                                          <tr className='flex items-center mt-1 mb-1'>
+                                            <div class="border-t border-2  border-gray-500   w-12 mx-auto"></div>
+                                          </tr>
+                                          <tr>
+                                           {randomNums.denominator1 * randomNums.denominator2} 
+                                          </tr>
+                                    </tbody>
+                                  </table>
+                                </td>
+                              </tr>
+              </table>
+
+          {/**========================  5th row =========================================**/}
+              <table className='solution-digit'>
+                                <tr className=''>
+                                  <td className='= px-2'>
+                                    <tr>=</tr>
+                                  </td>
+                                  <td className='first-col px-1'>
+                                    <table className=''>
+                                      <tbody className=''>
+                                            <tr className=''>
+                                                {((randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
+                                            </tr>
+                                      </tbody>
+                                    </table>
+                                  </td>
+                                </tr>
+                </table>
+
+        
+            </div>
+
+      </div>
+      </div>
   )
+ }
 }

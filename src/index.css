@@ -27,6 +27,10 @@
   @apply  text-[25px] font-semibold italic text-gray-500 text-center
 }
 
+.solution-digit {
+  @apply  text-[15px] font-semibold italic text-gray-500 text-center mt-4
+}
+
 .digit-input {
     @apply  text-[22px] font-semibold italic text-gray-500 text-center
   }
