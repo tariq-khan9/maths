@@ -7,22 +7,6 @@ function getRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-function getOperator(operation){
-  switch (operation) {
-    case 1: 
-        return '+';
-
-    case 2: 
-    return '-';
-
-    case 3: 
-    return '*';
-
-    default:
-       return '+';
-  }
-}
-
 
 // ========================================================================================
 // =========================== main arithmetic component ==================================
@@ -37,7 +21,8 @@ const Arithmetic = () => {
 
   const [result, setResult] = useState(false)
   const [difficulty, setDifficulty] =  useState(1)
-  const [operation, setOperation] = useState(1)
+  const [operation, setOperation] = useState(1);
+  const [mixOperation, setMixOperation] =  useState(0);
 
   const [inputs, setInputs] = useState({
     numerator: 1,
@@ -48,8 +33,6 @@ const Arithmetic = () => {
   const [showCheckModal, setShowCheckModal] = useState(false)
   const [showSolutionModal, setShowSolutionModal]= useState(false)
   
-
-
  
 
   useEffect(() => {
@@ -57,13 +40,29 @@ const Arithmetic = () => {
   
   }, [difficulty])
 
+  
+  const handleOperation = (op) => {
+    if(op===5){
+      setOperation(0)
+      setMixOperation(2)
+    }
+    else{
+      setOperation(op)
+      setMixOperation(0)
+    }
 
+  }
  
 
   const handleNext = () => {
-
     let min ;
     let max ;
+
+    if(mixOperation>0){
+       setOperation(0)
+       const operator = getRandomNumber(1, 4)
+       setMixOperation(operator)
+    }
 
     switch (difficulty) {
       case 1: 
@@ -77,8 +76,8 @@ const Arithmetic = () => {
         break;
 
       case 3:
-          min = 111;
-          max = 999;
+          min = -9;
+          max =  9;
       break;
 
       case 4:
@@ -91,33 +90,46 @@ const Arithmetic = () => {
           max = 9;
         break;
     }
+   
+    do {
+        var numerator1 = getRandomNumber(min, max);
+        var denominator1 = getRandomNumber(min, max);
+        var numerator2 = getRandomNumber(min, max);
+        var denominator2 = getRandomNumber(min, max);
 
-    const numerator1 = getRandomNumber(min, max); // Generates a random number between 1 and 10
-    const denominator1 = getRandomNumber(min, max);
-    const numerator2 = getRandomNumber(min, max);
-    const denominator2 = getRandomNumber(min, max);
+        const checkDeno = denominator1 * denominator2;
+        const checkNum = numerator1 * denominator2 + numerator2 * denominator1;
+        var checkResult = checkNum / checkDeno;
+        
+        if (difficulty === 3) {
+            if (checkResult > 0) {
+                break; // Exit the loop if checkResult is greater than 0
+            }
+        } else {
+            break; // Exit the loop if difficulty is not 3
+        }
+    } while (true);
 
     setRandomNums({
-      numerator1: numerator1,
-      denominator1: denominator1,
-      numerator2: numerator2,
-      denominator2: denominator2
-    })
+        numerator1: numerator1,
+        denominator1: denominator1,
+        numerator2: numerator2,
+        denominator2: denominator2
+    });
+    console.log(checkResult)
   }
 
  
 
   const handleCheck = () => {
-   
+    console.log(operation)
     if(operation===1){
                 const checkDeno = randomNums.denominator1 * randomNums.denominator2;
-
-                const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
-
-                var checkResult = checkNum/checkDeno
+                const checkNum = (randomNums.numerator1 * randomNums.denominator2) + (randomNums.numerator2 * randomNums.denominator1);
+                var checkResult = checkNum / checkDeno;
 
                 var inputResult = inputs.numerator/inputs.denominator;
-
+            
                 if(checkResult===inputResult){
                   setResult(true)
                   console.log("result  true/false is ", result)
@@ -126,48 +138,48 @@ const Arithmetic = () => {
                   setResult(false)
                 }
 
-                console.log("check result", checkResult,"input result", inputResult)
+                // console.log("check result", checkResult,"input result", inputResult)
 
-                console.log("num1", randomNums.numerator1, "num2", randomNums.numerator2, "dem1", randomNums.denominator1, "dem2", randomNums.denominator2)
+                // console.log("num1", randomNums.numerator1, "num2", randomNums.numerator2, "dem1", randomNums.denominator1, "dem2", randomNums.denominator2)
 
-                console.log("checkNum", checkNum, "checkDeno", checkDeno)
+                // console.log("checkNum", checkNum, "checkDeno", checkDeno)
 
         }
     /////////////////////////////////////////////////////////////////////////////////////////// 
 
-    if(difficulty===2){
-      if (operation===1){
-              const checkDeno = randomNums.numerator1 + randomNums.numerator2;
+    // if(difficulty===2){
+    //   if (operation===1){
+    //           const checkDeno = randomNums.numerator1 + randomNums.numerator2;
 
-              const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
+    //           const checkNum = (randomNums.numerator1*randomNums.denominator2) + (randomNums.numerator2*randomNums.denominator1);
 
-              var checkResult = checkNum/checkDeno
+    //           var checkResult = checkNum/checkDeno
 
-              var inputResult = inputs.numerator/inputs.denominator;
+    //           var inputResult = inputs.numerator/inputs.denominator;
 
-              console.log(checkResult, inputResult)
-      }
+    //           console.log(checkResult, inputResult)
+    //   }
 
-      if (operation===2){
-            const checkDeno = randomNums.denominator1 * randomNums.denominator2;
+    //   if (operation===2){
+    //         const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
-            const checkNum = (randomNums.numerator1*randomNums.denominator2) - (randomNums.numerator2*randomNums.denominator1);
+    //         const checkNum = (randomNums.numerator1*randomNums.denominator2) - (randomNums.numerator2*randomNums.denominator1);
 
-            var checkResult = checkNum/checkDeno
+    //         var checkResult = checkNum/checkDeno
 
-            var inputResult = inputs.numerator/inputs.denominator;
-      }
+    //         var inputResult = inputs.numerator/inputs.denominator;
+    //   }
 
-      if (operation===3) {
-            const checkDeno = randomNums.denominator1 * randomNums.denominator2;
+    //   if (operation===3) {
+    //         const checkDeno = randomNums.denominator1 * randomNums.denominator2;
 
-            const checkNum =  randomNums.numerator1 * randomNums.numerator2;
+    //         const checkNum =  randomNums.numerator1 * randomNums.numerator2;
 
-            var checkResult = checkNum/checkDeno
+    //         var checkResult = checkNum/checkDeno
 
-            var inputResult = inputs.numerator/inputs.denominator;
-      }
-    }
+    //         var inputResult = inputs.numerator/inputs.denominator;
+    //   }
+    // }
 
     //////////////////////////////////////////////////////////////////////////////////////////
       if(checkResult===inputResult){
@@ -185,11 +197,11 @@ const Arithmetic = () => {
     <div className='px-[20px] w-full flex flex-col pt-12 mt-[30px]'>
         <div className='buttons-div w-100 h-16 bg-slate-50 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <button onClick={()=>setOperation(1)} className={`btn-tab ${operation === 1 ? 'btn-selected' : ''}`}>Addition</button>
-              <button onClick={()=>setOperation(2)} className={`btn-tab ${operation === 2 ? 'btn-selected' : ''}`}>Subtraction</button>
-              <button onClick={()=>setOperation(3)} className={`btn-tab ${operation === 3 ? 'btn-selected' : ''}`}>Multiplication</button>
-              <button onClick={()=>setOperation(3)} className={`btn-tab ${operation === 4 ? 'btn-selected' : ''}`}>Division</button>
-              <button className={`btn-tab ${operation === 5 ? 'btn-selected' : ''}`}>Mixed</button>
+              <button onClick={()=>handleOperation(1)} className={`btn-tab ${operation === 1 ? 'btn-selected' : ''}`}>Addition</button>
+              <button onClick={()=>handleOperation(2)} className={`btn-tab ${operation === 2 ? 'btn-selected' : ''}`}>Subtraction</button>
+              <button onClick={()=>handleOperation(3)} className={`btn-tab ${operation === 3 ? 'btn-selected' : ''}`}>Multiplication</button>
+              <button onClick={()=>handleOperation(4)} className={`btn-tab ${operation === 4 ? 'btn-selected' : ''}`}>Division</button>
+              <button onClick={()=>handleOperation(5)} className={`btn-tab ${operation === 0 ? 'btn-selected' : ''}`}>Mixed</button>
             </div>
        
         </div>
@@ -207,19 +219,15 @@ const Arithmetic = () => {
                       <label className='ml-2 text-gray-500 text-[15px]'>Level 2</label>
                    </div>
 
+
                    <div className='flex items-center'>
-                      <input onChange={(e)=>setDifficulty(3)} type="radio" className='appearance-none w-4 h-4 border border-gray-400 rounded-[3px] checked:bg-blue-800 checked:border-transparent    focus:ring-opacity-50' id="level3" name="options" value="3"/>
+                      <input onChange={(e)=>setDifficulty(3)} type="radio" className='appearance-none w-4 h-4 border border-gray-400 rounded-[3px] checked:bg-orange-500 checked:border-transparent    focus:ring-opacity-50' id="level4" name="options" value="4"/>
                       <label className='ml-2 text-gray-500 text-[15px]'>Level 3</label>
                    </div>
 
                    <div className='flex items-center'>
-                      <input onChange={(e)=>setDifficulty(4)} type="radio" className='appearance-none w-4 h-4 border border-gray-400 rounded-[3px] checked:bg-orange-500 checked:border-transparent    focus:ring-opacity-50' id="level4" name="options" value="4"/>
+                      <input onChange={(e)=>setDifficulty(4)} type="radio" className='appearance-none w-4 h-4 border border-gray-400 rounded-[3px] checked:bg-orange-700 checked:border-transparent    focus:ring-opacity-50' id="level5" name="options" value="5"/>
                       <label className='ml-2 text-gray-500 text-[15px]'>Level 4</label>
-                   </div>
-
-                   <div className='flex items-center'>
-                      <input onChange={(e)=>setDifficulty(5)} type="radio" className='appearance-none w-4 h-4 border border-gray-400 rounded-[3px] checked:bg-orange-700 checked:border-transparent    focus:ring-opacity-50' id="level5" name="options" value="5"/>
-                      <label className='ml-2 text-gray-500 text-[15px]'>Level 5</label>
                    </div> 
             </div>
        
@@ -233,7 +241,7 @@ const Arithmetic = () => {
 
                 <div className='math  flex justify-center mt-6 '>
 
-                          { (difficulty===1 || difficulty===2) &&
+                          { (difficulty===1 || difficulty===2 || difficulty===4 || difficulty===3) &&
                               <table className='digit'>
                               <tr className=''>
                                 <td className='first-col px-4'>
@@ -255,9 +263,22 @@ const Arithmetic = () => {
                                 <td className='opertor px-4'>
                                     <table>
                                       <tbody>
+                                        {(operation>0)?
                                           <tr>
-                                            {getOperator(operation)}
+                                              {operation===1  && <h2>+</h2>}
+                                              {operation===2 && <h2>-</h2>}
+                                              {operation===3 && <h2>&times;</h2>}
+                                              {operation===4 && <h2>&divide;</h2>}
                                           </tr>
+                                           :
+                                           <tr>
+                                              { mixOperation===1 && <h2>+</h2>}
+                                              { mixOperation===2 && <h2>-</h2>}
+                                              { mixOperation===3 && <h2>&times;</h2>}
+                                              { mixOperation===4 && <h2>&divide;</h2>}
+                                          </tr>
+
+                                          }
                                       </tbody>
                                     </table>
                                 </td>
@@ -371,74 +392,7 @@ const Arithmetic = () => {
                           } */}
 
                      {/* //////////////////////////////////////////////////////////////////////////////////////////// */}
-                          {
-                          difficulty===4 &&
-                            <table className='digit'>
-                              <tr className=''>
-                                <td className='first-col px-4'>
-                                  <table className=''>
-                                    <tbody className=''>
-                                          <tr className=''>
-                                            {randomNums.numerator1}
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                            {randomNums.denominator1}
-                                          </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-
-                                <td className='opertor px-4'>
-                                  <table>
-                                    <tbody>
-                                          <tr>
-                                            {getOperator(operation)}
-                                          </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-
-                                <td className='second-col px-4'>
-                                  <table>
-                                    <tbody>
-                                          <tr>
-                                            {randomNums.numerator2}
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                            {randomNums.denominator2}
-                                          </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-
-                                <td className='= px-6'>
-                                  <tr>=</tr>
-                                </td>
-
-                                <td className='inputs px-4'>
-                                  <table>
-                                    <tbody>
-                                          <tr>
-                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                            <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
-                                          </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-                            </table>
-                          }
+                       
                 </div>
 
                 <div className='buttons w-full   flex flex-row justify-center mt-14'>
@@ -703,7 +657,10 @@ const SolutionModal = ({showSolutionModal, randomNums, operation}) => {
                              <table>
                                <tbody>
                                     <tr>
-                                      {getOperator(operation)}
+                                              {operation===1 && <h2>+</h2>}
+                                              {operation===2 && <h2>-</h2>}
+                                              {operation===3 && <h2>&times;</h2>}
+                                              {operation===4 && <h2>&divide;</h2>}
                                     </tr>
                                </tbody>
                              </table>
@@ -760,7 +717,10 @@ const SolutionModal = ({showSolutionModal, randomNums, operation}) => {
                              <table>
                                <tbody>
                                     <tr>
-                                      {getOperator(operation)}
+                                              {operation===1 && <h2>+</h2>}
+                                              {operation===2 && <h2>-</h2>}
+                                              {operation===3 && <h2>&times;</h2>}
+                                              {operation===4 && <h2>&divide;</h2>}
                                     </tr>
                                </tbody>
                              </table>
