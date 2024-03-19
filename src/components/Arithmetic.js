@@ -38,7 +38,7 @@ const Arithmetic = () => {
   useEffect(() => {
      handleNext()
   
-  }, [difficulty])
+  }, [difficulty, operation])
 
   
   const handleOperation = (op) => {
@@ -122,14 +122,31 @@ const Arithmetic = () => {
  
 
   const handleCheck = () => {
-    console.log(operation)
     if(operation===1){
                 const checkDeno = randomNums.denominator1 * randomNums.denominator2;
                 const checkNum = (randomNums.numerator1 * randomNums.denominator2) + (randomNums.numerator2 * randomNums.denominator1);
                 var checkResult = checkNum / checkDeno;
-
+    }
+    if(operation===2){
+      const checkDeno = randomNums.denominator1 * randomNums.denominator2;
+      const checkNum = (randomNums.numerator1 * randomNums.denominator2) - (randomNums.numerator2 * randomNums.denominator1);
+      var checkResult = checkNum / checkDeno;
+    }
+    if(operation===3){
+      const checkNum = randomNums.numerator1 * randomNums.numerator2;
+      const checkDeno = randomNums.denominator1 * randomNums.denominator2;
+     
+      var checkResult = checkNum / checkDeno;
+    }
+    if(operation===4){
+      const checkNum = randomNums.numerator1 * randomNums.denominator2;
+      const checkDeno = randomNums.denominator1 * randomNums.numerator2;
+     
+      var checkResult = checkNum / checkDeno;
+    }
                 var inputResult = inputs.numerator/inputs.denominator;
             
+               // console.log("check deno", checkDeno, "check num ", checkNum)
                 if(checkResult===inputResult){
                   setResult(true)
                   console.log("result  true/false is ", result)
@@ -144,7 +161,7 @@ const Arithmetic = () => {
 
                 // console.log("checkNum", checkNum, "checkDeno", checkDeno)
 
-        }
+        
     /////////////////////////////////////////////////////////////////////////////////////////// 
 
     // if(difficulty===2){
@@ -241,7 +258,7 @@ const Arithmetic = () => {
 
                 <div className='math  flex justify-center mt-6 '>
 
-                          { (difficulty===1 || difficulty===2 || difficulty===4 || difficulty===3) &&
+                          
                               <table className='digit'>
                               <tr className=''>
                                 <td className='first-col px-4'>
@@ -320,7 +337,7 @@ const Arithmetic = () => {
                                 </td>
                               </tr>
                               </table>
-                          }
+                          
                     {/* //////////////////////////////////////////////////////////////////////////////////////////// */}
                           {/* {
                           difficulty===2 &&
@@ -413,8 +430,8 @@ const Arithmetic = () => {
         </div>
 
         <RenderCards showRandom={showRandom}/>
-        <CheckModal showCheckModal={showCheckModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
-        <SolutionModal showSolutionModal={showSolutionModal} randomNums={randomNums} operation={operation}/>
+        <CheckModal showCheckModal={showCheckModal}  setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
+        <SolutionModal showSolutionModal={showSolutionModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} randomNums={randomNums} operation={operation} mixOperation={mixOperation} inputs={inputs}/>
     </div>
   )
 }
@@ -567,10 +584,6 @@ const handleSubmit = (randomNum) => {
 
 const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, result}) => {
 
-  
-      
- 
-
   if(showCheckModal)
   return(
   <div className='fixed inset-0 bg-black  bg-opacity-10 backdrop-blur-sm flex justify-center items-center '>
@@ -587,7 +600,7 @@ const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, re
                </div>
                <div className='flex justify-end'>
                  <button onClick={()=>setShowCheckModal(false)} className='bg-green-800 hover:bg-green-700 mx-2 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>{result? 'Try more' : 'Try again'}</button>
-                 <button onClick={()=>setShowSolutionModal(true)} className='bg-orange-600 hover:bg-orange-500 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Solution</button>
+                 {!result && <button onClick={()=>setShowSolutionModal(true)} className='bg-orange-600 hover:bg-orange-500 text-white p-2 pb-3 rounded-md px-4 text-[20px]'>Solution</button>}
                </div>
    
        </div>
@@ -618,7 +631,7 @@ const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, re
 //   )
 // }
 
-const SolutionModal = ({showSolutionModal, randomNums, operation}) => {
+const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal, randomNums,mixOperation,inputs, operation}) => {
 
   if(showSolutionModal)
  {
@@ -627,219 +640,589 @@ const SolutionModal = ({showSolutionModal, randomNums, operation}) => {
 
       <div className='bg-white rounded-md z-40 w-96  p-4  mb-[200px]'>
             <div className='text-center w-full'>
-              <h2 className='text-[20px] font-semibold text-orange-500 font-thin'>Solution</h2>
+              <h2 className='text-[20px] font-bold underline text-orange-500 font-thin'>Solution</h2>
             </div>
 
             <div>
-              <h2>Your answer:</h2>
-              <table className='solution-digit'>
-                        <tr className=''>
-                          <td className='= px-6'>
-                            <tr>=</tr>
-                          </td>
-                          <td className='first-col px-4'>
-                             <table className=''>
-                               <tbody className=''>
-                                    <tr className=''>
-                                      {randomNums.numerator1}
-                                    </tr>
-                                    <tr className='flex items-center mt-4 mb-4'>
-                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator1}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                          <td className='opertor px-4'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                              {operation===1 && <h2>+</h2>}
-                                              {operation===2 && <h2>-</h2>}
-                                              {operation===3 && <h2>&times;</h2>}
-                                              {operation===4 && <h2>&divide;</h2>}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                          <td className='second-col px-4'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                      {randomNums.numerator2}
-                                    </tr>
-                                    <tr className='flex items-center mt-4 mb-4'>
-                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator2}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                         
-
-                          
+              <h2 className='font-bold'>Your answer:</h2>
+              <table className='solution-digit mb-4'>
+                        <td className='= px-2'>
+                                                <tr>=</tr>
+                        </td>
+                        <td>
+                        <tr className='px-2'>
+                            {inputs.numerator/inputs.denominator}
                         </tr>
+                        </td>
               </table>
             </div>
 
             <div>
-               <h2>Solution:</h2>
-       {/**========================  first row =========================================**/}
-               <table className='solution-digit'>
-                        <tr className=''>
-                          <td className='= px-2'>
-                            <tr>=</tr>
-                          </td>
-                          <td className='first-col px-1'>
-                             <table className=''>
-                               <tbody className=''>
-                                    <tr className=''>
-                                      {randomNums.numerator1}
-                                    </tr>
-                                    <tr className='flex items-center mt-1 mb-1'>
-                                       <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator1}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                          <td className='opertor px-1'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                              {operation===1 && <h2>+</h2>}
-                                              {operation===2 && <h2>-</h2>}
-                                              {operation===3 && <h2>&times;</h2>}
-                                              {operation===4 && <h2>&divide;</h2>}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                          <td className='second-col px-1'>
-                             <table>
-                               <tbody>
-                                    <tr>
-                                      {randomNums.numerator2}
-                                    </tr>
-                                    <tr className='flex items-center mt-1 mb-1'>
-                                       <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                      {randomNums.denominator2}
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-
-                         
-
-                          
-                        </tr>
-              </table>
-       {/**========================  second row =========================================**/}
-       <table className='solution-digit'>
-                        <tr className=''>
-                          <td className='= px-2'>
-                            <tr>=</tr>
-                          </td>
-                          <td className='first-col px-1'>
-                             <table className=''>
-                               <tbody className=''>
-                                    <tr className=''>
-                                      (  {randomNums.numerator1} * {randomNums.denominator2} )   +   ( {randomNums.denominator1} * {randomNums.numerator2} )
-                                    </tr>
-
-                                    <tr className='flex items-center mt-1 mb-1'>
-                                       <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                     ( {randomNums.denominator1} * {randomNums.denominator2} )
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-                        </tr>
-        </table>
-         {/**========================  third row =========================================**/}
-       <table className='solution-digit'>
-                        <tr className=''>
-                          <td className='= px-2'>
-                            <tr>=</tr>
-                          </td>
-                          <td className='first-col px-1'>
-                             <table className=''>
-                               <tbody className=''>
-                                    <tr className=''>
-                                      (  {randomNums.numerator1 * randomNums.denominator2} )   +   ( {randomNums.denominator1 * randomNums.numerator2} )
-                                    </tr>
-
-                                    <tr className='flex items-center mt-1 mb-1'>
-                                       <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
-                                    </tr>
-                                    <tr>
-                                     ( {randomNums.denominator1 * randomNums.denominator2} )
-                                    </tr>
-                               </tbody>
-                             </table>
-                          </td>
-                        </tr>
-        </table>
-
-         {/**========================  4th row =========================================**/}
-            <table className='solution-digit'>
-                              <tr className=''>
-                                <td className='= px-2'>
-                                  <tr>=</tr>
-                                </td>
-                                <td className='first-col px-1'>
-                                  <table className=''>
-                                    <tbody className=''>
-                                          <tr className=''>
-                                             {(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} 
-                                          </tr>
-
-                                          <tr className='flex items-center mt-1 mb-1'>
-                                            <div class="border-t border-2  border-gray-500   w-12 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                           {randomNums.denominator1 * randomNums.denominator2} 
-                                          </tr>
-                                    </tbody>
-                                  </table>
-                                </td>
-                              </tr>
-              </table>
-
-          {/**========================  5th row =========================================**/}
-              <table className='solution-digit'>
-                                <tr className=''>
-                                  <td className='= px-2'>
-                                    <tr>=</tr>
-                                  </td>
-                                  <td className='first-col px-1'>
-                                    <table className=''>
-                                      <tbody className=''>
+               <h2 className='font-bold'>Solution:</h2>
+              {operation===1  &&
+                 <div>
+                          {/**========================  first row =========================================**/}
+                                  <table className='solution-digit'>
                                             <tr className=''>
-                                                {((randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
-                                            </tr>
-                                      </tbody>
-                                    </table>
-                                  </td>
-                                </tr>
-                </table>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          {randomNums.numerator1}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator1}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
 
-        
+                                              <td className='opertor px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                                  {operation===1 && <h2>+</h2>}
+                                                                  {operation===2 && <h2>-</h2>}
+                                                                  {operation===3 && <h2>&times;</h2>}
+                                                                  {operation===4 && <h2>&divide;</h2>}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='second-col px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                          {randomNums.numerator2}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator2}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                            
+
+                                              
+                                            </tr>
+                                  </table>
+                          {/**========================  second row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          (  {randomNums.numerator1} * {randomNums.denominator2} )   +   ( {randomNums.denominator1} * {randomNums.numerator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1} * {randomNums.denominator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+                            {/**========================  third row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          (  {randomNums.numerator1 * randomNums.denominator2} )   +   ( {randomNums.denominator1 * randomNums.numerator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1 * randomNums.denominator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+
+                            {/**========================  4th row =========================================**/}
+                                <table className='solution-digit'>
+                                                  <tr className=''>
+                                                    <td className='= px-2'>
+                                                      <tr>=</tr>
+                                                    </td>
+                                                    <td className='first-col px-1'>
+                                                      <table className=''>
+                                                        <tbody className=''>
+                                                              <tr className=''>
+                                                                {(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} 
+                                                              </tr>
+
+                                                              <tr className='flex items-center mt-1 mb-1'>
+                                                                <div class="border-t border-2  border-gray-500   w-12 mx-auto"></div>
+                                                              </tr>
+                                                              <tr>
+                                                              {randomNums.denominator1 * randomNums.denominator2} 
+                                                              </tr>
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                  </table>
+
+                              {/**========================  5th row =========================================**/}
+                                  <table className='solution-digit'>
+                                                    <tr className=''>
+                                                      <td className='= px-2'>
+                                                        <tr>=</tr>
+                                                      </td>
+                                                      <td className='first-col px-1'>
+                                                        <table className=''>
+                                                          <tbody className=''>
+                                                                <tr className=''>
+                                                                    {((randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
+                                                                </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                    </table>
+                  </div>
+              }
+  {/* ===============================================  subtraction ==================================================== */}
+              {operation===2 &&
+                 <div>
+                          {/**========================  first row =========================================**/}
+                                  <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          {randomNums.numerator1}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator1}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='opertor px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                          -
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='second-col px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                          {randomNums.numerator2}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator2}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                            
+
+                                              
+                                            </tr>
+                                  </table>
+                          {/**========================  second row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          (  {randomNums.numerator1} * {randomNums.denominator2} )   -  ( {randomNums.denominator1} * {randomNums.numerator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1} * {randomNums.denominator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+                            {/**========================  third row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          (  {randomNums.numerator1 * randomNums.denominator2} )   -  ( {randomNums.denominator1 * randomNums.numerator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1 * randomNums.denominator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+
+                            {/**========================  4th row =========================================**/}
+                                <table className='solution-digit'>
+                                                  <tr className=''>
+                                                    <td className='= px-2'>
+                                                      <tr>=</tr>
+                                                    </td>
+                                                    <td className='first-col px-1'>
+                                                      <table className=''>
+                                                        <tbody className=''>
+                                                              <tr className=''>
+                                                                {(randomNums.numerator1 * randomNums.denominator2)   -  (randomNums.denominator1 * randomNums.numerator2)} 
+                                                              </tr>
+
+                                                              <tr className='flex items-center mt-1 mb-1'>
+                                                                <div class="border-t border-2  border-gray-500   w-12 mx-auto"></div>
+                                                              </tr>
+                                                              <tr>
+                                                              {randomNums.denominator1 * randomNums.denominator2} 
+                                                              </tr>
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                  </table>
+
+                              {/**========================  5th row =========================================**/}
+                                  <table className='solution-digit'>
+                                                    <tr className=''>
+                                                      <td className='= px-2'>
+                                                        <tr>=</tr>
+                                                      </td>
+                                                      <td className='first-col px-1'>
+                                                        <table className=''>
+                                                          <tbody className=''>
+                                                                <tr className=''>
+                                                                    {((randomNums.numerator1 * randomNums.denominator2)   -   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
+                                                                </tr>
+                                                          </tbody>
+                                                        </table>
+                                                      </td>
+                                                    </tr>
+                                    </table>
+                  </div>
+              }
+
+{/* ===============================================  multiply ==================================================== */}
+              {operation===3 &&
+                 <div>
+                          {/**========================  first row =========================================**/}
+                                  <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          {randomNums.numerator1}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator1}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='opertor px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                        &times;
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='second-col px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                          {randomNums.numerator2}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator2}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                            
+
+                                              
+                                            </tr>
+                                  </table>
+                          {/**========================  second row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          ( {randomNums.numerator1} * {randomNums.numerator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1} * {randomNums.denominator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+                            {/**========================  third row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                            {randomNums.numerator1 * randomNums.numerator2}   
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                         {randomNums.denominator1 * randomNums.denominator2} 
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+
+                            {/**========================  4th row =========================================**/}
+                                <table className='solution-digit'>
+                                                  <tr className=''>
+                                                    <td className='= px-2'>
+                                                      <tr>=</tr>
+                                                    </td>
+                                                    <td className='first-col px-1'>
+                                                      <table className=''>
+                                                        <tbody className=''>
+                                                              <tr className=''>
+                                                                {(randomNums.numerator1 * randomNums.numerator2) /  (randomNums.denominator1 * randomNums.denominator2)} 
+                                                              </tr>
+
+                                                           
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                  </table>
+
+                             
+                  </div>
+              }
+
+{/* ===============================================  divide ==================================================== */}
+              {operation===4 &&
+                 <div>
+                          {/**========================  first row =========================================**/}
+                                  <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          {randomNums.numerator1}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator1}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='opertor px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                        &divide;
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                              <td className='second-col px-1'>
+                                                <table>
+                                                  <tbody>
+                                                        <tr>
+                                                          {randomNums.numerator2}
+                                                        </tr>
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                          {randomNums.denominator2}
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+
+                                            
+
+                                              
+                                            </tr>
+                                  </table>
+                          {/**========================  second row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                          ( {randomNums.numerator1} * {randomNums.denominator2} )
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-32 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                        ( {randomNums.denominator1} * {randomNums.numerator2} )
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+                            {/**========================  third row =========================================**/}
+                          <table className='solution-digit'>
+                                            <tr className=''>
+                                              <td className='= px-2'>
+                                                <tr>=</tr>
+                                              </td>
+                                              <td className='first-col px-1'>
+                                                <table className=''>
+                                                  <tbody className=''>
+                                                        <tr className=''>
+                                                            {randomNums.numerator1 * randomNums.denominator2}   
+                                                        </tr>
+
+                                                        <tr className='flex items-center mt-1 mb-1'>
+                                                          <div class="border-t border-2  border-gray-500   w-24 mx-auto"></div>
+                                                        </tr>
+                                                        <tr>
+                                                         {randomNums.denominator1 * randomNums.numerator2} 
+                                                        </tr>
+                                                  </tbody>
+                                                </table>
+                                              </td>
+                                            </tr>
+                            </table>
+
+                            {/**========================  4th row =========================================**/}
+                                <table className='solution-digit'>
+                                                  <tr className=''>
+                                                    <td className='= px-2'>
+                                                      <tr>=</tr>
+                                                    </td>
+                                                    <td className='first-col px-1'>
+                                                      <table className=''>
+                                                        <tbody className=''>
+                                                              <tr className=''>
+                                                                {(randomNums.numerator1 * randomNums.denominator2) /  (randomNums.denominator1 * randomNums.numerator2)} 
+                                                              </tr>
+
+                                                           
+                                                        </tbody>
+                                                      </table>
+                                                    </td>
+                                                  </tr>
+                                  </table>
+
+                             
+                  </div>
+              }
+            {/* ====================================== close button ======================================== */}
+               <div className='flex flex-row w-full  justify-end mt-6 pr-4'>
+                   <button className='flex justify-items-end p-1 pb-2 px-8 text-white rounded-md bg-orange-500' onClick={()=>
+                     { setShowCheckModal(false)
+                       setShowSolutionModal(false)}}>Close</button>
+               </div>
             </div>
 
       </div>
