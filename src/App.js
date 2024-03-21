@@ -1,4 +1,4 @@
-import Arithmetic from "./components/Arithmetic";
+import Arithmetic from "./components/arithmetic/Arithmetic";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
 
