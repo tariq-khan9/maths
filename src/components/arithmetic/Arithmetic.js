@@ -74,7 +74,7 @@ const Arithmetic = () => {
   const handleNext = () => {
     // let min ;
     // let max ;
-
+   
     if(mixOperation>0){
        setOperation(0)
        const operator = getRandomNumber(1, 4)
@@ -116,9 +116,11 @@ const Arithmetic = () => {
         if (denominator2 < 0) negativeCount++;
 
          // Check if difficulty is 3 and there are more than 1 negative numbers
-        if ((difficulty === 3 && negativeCount > 1) || (sameDenoms && denominator1<0)) {
+        if ((difficulty === 3 && negativeCount > 1) || (sameDenoms && denominator1<0) ) {
           continue; // Skip this iteration and generate new numbers
         }
+
+       
 
       // when operation is add or subtranct and sameDenoms is true
         if(operation<3 && sameDenoms){
@@ -166,7 +168,7 @@ const Arithmetic = () => {
         numerator2: numerator2,
         denominator2: denominator2
     });
-    console.log(checkResult)
+    console.log("check result", checkResult)
   }
 
  
@@ -214,7 +216,6 @@ const Arithmetic = () => {
                // console.log("check deno", checkDeno, "check num ", checkNum)
                 if(checkResult===inputResult){
                   setResult(true)
-                  console.log("result  true/false is ", result)
                 }
                 else{
                   setResult(false)
@@ -266,7 +267,6 @@ const Arithmetic = () => {
     //////////////////////////////////////////////////////////////////////////////////////////
       if(checkResult===inputResult){
         setResult(true)
-        console.log("result  true/false is ", result)
       }
       else{
         setResult(false)
@@ -323,86 +323,312 @@ const Arithmetic = () => {
                 <h5 className='sub-hd'>Solve this fraction</h5>
 
                 <div className='math  flex justify-center mt-6 '>
+                      {(operation===4 || mixOperation===4)?
+                          <div>
+                            {difficulty===1 &&
+                                   <table className='digit'>
+                                   <tr className=''>
+                                     <td className='first-col px-4'>
+                                         <table className=''>
+                                           <tbody className=''>
+                                               <tr className=''>
+                                                 {randomNums.numerator1}
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 {randomNums.denominator1}
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='opertor px-4'>
+                                         <table>
+                                           <tbody>
+                                             {(operation>0)?
+                                               <tr>
+                                                   {operation===1  && <h2>+</h2>}
+                                                   {operation===2 && <h2>-</h2>}
+                                                   {operation===3 && <h2>&times;</h2>}
+                                                   {operation===4 && <h2>&divide;</h2>}
+                                               </tr>
+                                                :
+                                                <tr>
+                                                   { mixOperation===1 && <h2>+</h2>}
+                                                   { mixOperation===2 && <h2>-</h2>}
+                                                   { mixOperation===3 && <h2>&times;</h2>}
+                                                   { mixOperation===4 && <h2>&divide;</h2>}
+                                               </tr>
+      
+                                               }
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='second-col px-4'>
+                                         <table>
+                                           <tbody>
+                                               <tr>
+                                                 {randomNums.numerator2}
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 {(operation<3 && sameDenoms)? randomNums.denominator1 : randomNums.denominator2}
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='= px-6'>
+                                       <tr>=</tr>
+                                     </td>
+               {/* ================================================== input side ========================================== */}
+                                     <td className='inputs px-4 flex flex-row'>
+                                     <td className='first-col px-4'>
+                                         <table className=''>
+                                           <tbody className=''>
+                                               <tr className=''>
+                                                 {randomNums.numerator1}
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 {randomNums.denominator1}
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='opertor px-4  flex items-center'>
+                                         <table>
+                                           <tbody className=''>
+                                              <tr>
+                                              <td className="text-center"> {/* Add a td element to center the input */}
+                                                <input className='input-div digit-input text-center'   />
+                                              </td>
+                                            </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='second-col px-4'>
+                                         <table>
+                                           <tbody>
+                                               <tr className=''>
+                                                 <input className='input digit-input'/>
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 <input className='input digit-input '/>
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>       
+                                      </td>
+                                   </tr>
+                                   </table>
+                            }
 
-                          
-                              <table className='digit'>
-                              <tr className=''>
-                                <td className='first-col px-4'>
-                                    <table className=''>
-                                      <tbody className=''>
-                                          <tr className=''>
-                                            {randomNums.numerator1}
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                              <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                            {randomNums.denominator1}
-                                          </tr>
-                                      </tbody>
-                                    </table>
-                                </td>
+                            {difficulty===2 &&
+                                   <table className='digit'>
+                                   <tr className=''>
+                                     <td className='first-col px-4'>
+                                         <table className=''>
+                                           <tbody className=''>
+                                               <tr className=''>
+                                                 {randomNums.numerator1}
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 {randomNums.denominator1}
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='opertor px-4'>
+                                         <table>
+                                           <tbody>
+                                             {(operation>0)?
+                                               <tr>
+                                                   {operation===1  && <h2>+</h2>}
+                                                   {operation===2 && <h2>-</h2>}
+                                                   {operation===3 && <h2>&times;</h2>}
+                                                   {operation===4 && <h2>&divide;</h2>}
+                                               </tr>
+                                                :
+                                                <tr>
+                                                   { mixOperation===1 && <h2>+</h2>}
+                                                   { mixOperation===2 && <h2>-</h2>}
+                                                   { mixOperation===3 && <h2>&times;</h2>}
+                                                   { mixOperation===4 && <h2>&divide;</h2>}
+                                               </tr>
+      
+                                               }
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='second-col px-4'>
+                                         <table>
+                                           <tbody>
+                                               <tr>
+                                                 {randomNums.numerator2}
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 {(operation<3 && sameDenoms)? randomNums.denominator1 : randomNums.denominator2}
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='= px-6'>
+                                       <tr>=</tr>
+                                     </td>
+               {/* ================================================== input side ========================================== */}
+                                     <td className='inputs px-4 flex flex-row'>
+                                     <td className='first-col px-4'>
+                                         <table>
+                                           <tbody>
+                                               <tr className=''>
+                                                 <input className='input digit-input'/>
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 <input className='input digit-input '/>
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>  
+      
+                                     <td className='opertor px-4  flex items-center'>
+                                         <table>
+                                           <tbody className=''>
+                                              <tr>
+                                              <td className="text-center"> {/* Add a td element to center the input */}
+                                                <input className='input-div digit-input text-center'   />
+                                              </td>
+                                            </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>
+      
+                                     <td className='second-col px-4'>
+                                         <table>
+                                           <tbody>
+                                               <tr className=''>
+                                                 <input className='input digit-input'/>
+                                               </tr>
+                                               <tr className='flex items-center mt-4 mb-4'>
+                                                   <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
+                                               </tr>
+                                               <tr>
+                                                 <input className='input digit-input '/>
+                                               </tr>
+                                           </tbody>
+                                         </table>
+                                     </td>       
+                                      </td>
+                                   </tr>
+                                   </table>
+                            }
+                            
+                           </div>
+                      :
+                            <table className='digit'>
+                            <tr className=''>
+                              <td className='first-col px-4'>
+                                  <table className=''>
+                                    <tbody className=''>
+                                        <tr className=''>
+                                          {randomNums.numerator1}
+                                        </tr>
+                                        <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                        </tr>
+                                        <tr>
+                                          {randomNums.denominator1}
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                              </td>
 
-                                <td className='opertor px-4'>
-                                    <table>
-                                      <tbody>
-                                        {(operation>0)?
-                                          <tr>
-                                              {operation===1  && <h2>+</h2>}
-                                              {operation===2 && <h2>-</h2>}
-                                              {operation===3 && <h2>&times;</h2>}
-                                              {operation===4 && <h2>&divide;</h2>}
-                                          </tr>
-                                           :
-                                           <tr>
-                                              { mixOperation===1 && <h2>+</h2>}
-                                              { mixOperation===2 && <h2>-</h2>}
-                                              { mixOperation===3 && <h2>&times;</h2>}
-                                              { mixOperation===4 && <h2>&divide;</h2>}
-                                          </tr>
+                              <td className='opertor px-4'>
+                                  <table>
+                                    <tbody>
+                                      {(operation>0)?
+                                        <tr>
+                                            {operation===1  && <h2>+</h2>}
+                                            {operation===2 && <h2>-</h2>}
+                                            {operation===3 && <h2>&times;</h2>}
+                                            {operation===4 && <h2>&divide;</h2>}
+                                        </tr>
+                                        :
+                                        <tr>
+                                            { mixOperation===1 && <h2>+</h2>}
+                                            { mixOperation===2 && <h2>-</h2>}
+                                            { mixOperation===3 && <h2>&times;</h2>}
+                                            { mixOperation===4 && <h2>&divide;</h2>}
+                                        </tr>
 
-                                          }
-                                      </tbody>
-                                    </table>
-                                </td>
+                                        }
+                                    </tbody>
+                                  </table>
+                              </td>
 
-                                <td className='second-col px-4'>
-                                    <table>
-                                      <tbody>
-                                          <tr>
-                                            {randomNums.numerator2}
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                              <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                            {(operation<3 && sameDenoms)? randomNums.denominator1 : randomNums.denominator2}
-                                          </tr>
-                                      </tbody>
-                                    </table>
-                                </td>
+                              <td className='second-col px-4'>
+                                  <table>
+                                    <tbody>
+                                        <tr>
+                                          {randomNums.numerator2}
+                                        </tr>
+                                        <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-6 mx-auto"></div>
+                                        </tr>
+                                        <tr>
+                                          {(operation<3 && sameDenoms)? randomNums.denominator1 : randomNums.denominator2}
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                              </td>
 
-                                <td className='= px-6'>
-                                  <tr>=</tr>
-                                </td>
+                              <td className='= px-6'>
+                                <tr>=</tr>
+                              </td>
 
-                                <td className='inputs px-4'>
-                                    <table>
-                                      <tbody>
-                                          <tr>
-                                              <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
-                                          </tr>
-                                          <tr className='flex items-center mt-4 mb-4'>
-                                              <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
-                                          </tr>
-                                          <tr>
-                                            <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
-                                          </tr>
-                                      </tbody>
-                                    </table>
-                                </td>
-                              </tr>
-                              </table>
+                              <td className='inputs px-4'>
+                                  <table>
+                                    <tbody>
+                                        <tr>
+                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                        </tr>
+                                        <tr className='flex items-center mt-4 mb-4'>
+                                            <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
+                                        </tr>
+                                        <tr>
+                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                        </tr>
+                                    </tbody>
+                                  </table>
+                              </td>
+                            </tr>
+                            </table>                   
+                      }
+                           
                           
                     {/* //////////////////////////////////////////////////////////////////////////////////////////// */}
                           {/* {

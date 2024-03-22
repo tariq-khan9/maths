@@ -19,12 +19,11 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                <div>
                  <h2 className='font-bold'>Your answer:</h2>
                  <table className='solution-digit mb-4'>
-                           <td className='= px-2'>
-                                                   <tr>=</tr>
-                           </td>
+                          
                            <td>
                            <tr className='px-2'>
-                               {inputs.numerator/inputs.denominator}
+                               
+                               <SimplifyFraction numerator={inputs.numerator} denominator={inputs.denominator}/>
                            </tr>
                            </td>
                  </table>
@@ -542,14 +541,13 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                         {/**========================  4th row =========================================**/}
                             <table className='solution-digit'>
                                                 <tr className=''>
-                                                <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                </td>
+                    
                                                 <td className='first-col px-1'>
                                                     <table className=''>
                                                     <tbody className=''>
                                                             <tr className=''>
-                                                            {(randomNums.numerator1 * randomNums.numerator2) /  (randomNums.denominator1 * randomNums.denominator2)} 
+                                                        
+                                                             <SimplifyFraction numerator={randomNums.numerator1 * randomNums.numerator2} denominator={randomNums.denominator1 * randomNums.denominator2} />
                                                             </tr>
 
                                                         
@@ -569,9 +567,7 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                         {/**========================  first row =========================================**/}
                                 <table className='solution-digit'>
                                         <tr className=''>
-                                            <td className='= px-2'>
-                                            <tr>=</tr>
-                                            </td>
+                                          
                                             <td className='first-col px-1'>
                                             <table className=''>
                                                 <tbody className=''>
@@ -671,14 +667,13 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                         {/**========================  4th row =========================================**/}
                             <table className='solution-digit'>
                                                 <tr className=''>
-                                                <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                </td>
+                                                
                                                 <td className='first-col px-1'>
                                                     <table className=''>
                                                     <tbody className=''>
                                                             <tr className=''>
-                                                            {(randomNums.numerator1 * randomNums.denominator2) /  (randomNums.denominator1 * randomNums.numerator2)} 
+                                                      
+                                                            <SimplifyFraction numerator={randomNums.numerator1 * randomNums.denominator2} denominator={randomNums.denominator1 * randomNums.numerator2}/>
                                                             </tr>
 
                                                         
@@ -828,14 +823,13 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                             {/**========================  5th row =========================================**/}
                                 <table className='solution-digit'>
                                                 <tr className=''>
-                                                    <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                    </td>
+                                                    
                                                     <td className='first-col px-1'>
                                                     <table className=''>
                                                         <tbody className=''>
                                                             <tr className=''>
-                                                                {((randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
+                                                          
+                                                                <SimplifyFraction numerator={(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} denominator={randomNums.denominator1 * randomNums.denominator2}/>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -977,14 +971,13 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                             {/**========================  5th row =========================================**/}
                                 <table className='solution-digit'>
                                                 <tr className=''>
-                                                    <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                    </td>
+                                               
                                                     <td className='first-col px-1'>
                                                     <table className=''>
                                                         <tbody className=''>
                                                             <tr className=''>
-                                                                {((randomNums.numerator1 * randomNums.denominator2)   -   (randomNums.denominator1 * randomNums.numerator2)) / (randomNums.denominator1 * randomNums.denominator2)}  
+                                                            
+                                                                <SimplifyFraction numerator={(randomNums.numerator1 * randomNums.denominator2)   -   (randomNums.denominator1 * randomNums.numerator2)} denominator={randomNums.denominator1 * randomNums.denominator2}/>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -1109,7 +1102,8 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                                     <table className=''>
                                                     <tbody className=''>
                                                             <tr className=''>
-                                                            {(randomNums.numerator1 * randomNums.numerator2) /  (randomNums.denominator1 * randomNums.denominator2)} 
+                                                        
+                                                            <SimplifyFraction numerator={randomNums.numerator1 * randomNums.numerator2} denominator={randomNums.denominator1 * randomNums.denominator2}/>
                                                             </tr>
 
                                                         
@@ -1231,14 +1225,13 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                         {/**========================  4th row =========================================**/}
                             <table className='solution-digit'>
                                                 <tr className=''>
-                                                <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                </td>
+                                             
                                                 <td className='first-col px-1'>
                                                     <table className=''>
                                                     <tbody className=''>
                                                             <tr className=''>
-                                                            {(randomNums.numerator1 * randomNums.denominator2) /  (randomNums.denominator1 * randomNums.numerator2)} 
+                                                     
+                                                            <SimplifyFraction numerator={randomNums.numerator1 * randomNums.denominator2} denominator={randomNums.denominator1 * randomNums.numerator2}/>
                                                             </tr>
 
                                                         

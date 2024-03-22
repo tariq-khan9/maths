@@ -12,7 +12,6 @@ function App() {
               <Sidebar/>
            </div>
           <div className="w-4/5">
-          
               <Arithmetic/>
           </div>
       
