@@ -37,16 +37,66 @@ const DropdownButton = ({title, setSameDenoms}) => {
     setSelectedValue('option1'); // Set default selected value when opening dropdown
   };
 
+  // return (
+  //   <div className="relative" ref={dropdownRef}>
+  //     <button onClick={handleDropdownToggle} >
+  //       {title}
+  //     </button>
+  //     {dropdownOpen && (
+  //       <div className={`absolute flex flex-col justify-center w-36 top-[40px] ${title==='Addition'? 'left-[-70%] ' : 'left-[-40%]'}  bg-green-800 text-white shadow-md rounded-md`}>
+  //           <button onClick={() => handleOperation(true)} className={`dropdown-item rounded-t-md py-1 pt-2 hover:bg-green-600 `}>Same-Denoms</button>
+  //         <button onClick={() => handleOperation(false)} className={`dropdown-item rounded-b-md py-1 pb-2 hover:bg-green-600`}>Different-Denoms</button>
+
+  //         <button className="dropdown-item hover:bg-red-600" onMouseEnter={() => setSelectedValue('')}>
+  //           {selectedValue === '' && (
+  //             <>
+  //               <button onClick={() => handleOperation(true)} className="dropdown-item py-1 hover:bg-green-600">
+  //                 Same-Denoms
+  //               </button>
+  //               <button onClick={() => handleOperation(false)} className="dropdown-item py-1 hover:bg-green-600">
+  //                 Different-Denoms
+  //               </button>
+  //             </>
+  //           )}
+  //         </button>
+          
+  //       </div>
+  //     )}
+  //   </div>
+  // );
+
+
   return (
     <div className="relative" ref={dropdownRef}>
-      <button onClick={handleDropdownToggle} >
+      <button onClick={handleDropdownToggle}>
         {title}
       </button>
       {dropdownOpen && (
-        <div className={`absolute flex flex-col justify-center w-36 top-[40px] ${title==='Addition'? 'left-[-70%] ' : 'left-[-40%]'}  bg-green-800 text-white shadow-md rounded-md`}>
-            <button onClick={() => handleOperation(true)} className={`dropdown-item rounded-t-md py-1 pt-2 hover:bg-green-600 `}>Same-Denoms</button>
-          <button onClick={() => handleOperation(false)} className={`dropdown-item rounded-b-md py-1 pb-2 hover:bg-green-600`}>Different-Denoms</button>
-          
+        <div className={`absolute flex flex-col justify-center w-36 top-[40px] ${title === 'Addition' ? 'left-[-70%]' : 'left-[-40%]'}  bg-green-800 text-white shadow-md rounded-md`}>
+          <button className="dropdown-item hover:bg-green-600" onMouseEnter={() => setSelectedValue('')}>
+            {selectedValue === '' && (
+              <>
+                <button onClick={() => handleOperation(true)} className="dropdown-item py-1 hover:bg-green-600">
+                  Same-Denoms
+                </button>
+                <button onClick={() => handleOperation(false)} className="dropdown-item py-1 hover:bg-green-600">
+                  Different-Denoms
+                </button>
+              </>
+            )}
+          </button>
+          <button className="dropdown-item py-1 hover:bg-green-600" onMouseEnter={() => setSelectedValue('')}>
+            {selectedValue === '' && (
+              <>
+                <button onClick={() => handleOperation(true)} className="dropdown-item py-1 hover:bg-green-600">
+                  Same-Denoms
+                </button>
+                <button onClick={() => handleOperation(false)} className="dropdown-item py-1 hover:bg-green-600">
+                  Different-Denoms
+                </button>
+              </>
+            )}
+          </button>
         </div>
       )}
     </div>

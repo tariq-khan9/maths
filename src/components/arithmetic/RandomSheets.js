@@ -3,7 +3,10 @@ import CheckModal from './CheckModal'
 
 const RandomSheets = ({getRandomNumber, showRandom,setShowRandom, operation, mixOperation,difficulty, inputRange}) => {
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
- const [randomSheet, setRandomSheet] = useState([])
+ 
+  
+  const [randomSheet, setRandomSheet] = useState([])
+  const [totalSheets, setTotalSheets] = useState(8);
  const [showCheckModal, setShowCheckModal] = useState(false)
  const [result, setResult] = useState(false)
  
@@ -18,20 +21,21 @@ const [inputs, setInputs] = useState({
     // Skip initial render
    
   
-      handleRandomSheets()
+      
       setShowRandom(true)
       console.log(showRandom)
    
   
   }, [inputRange]);
    
- const handleRandomSheets = () => {
+ const handleRandomSheets = (sheets) => {
   if (randomSheet.length > 0) {
     // Clear randomSheet by setting it to an empty array
     setRandomSheet([]);
   }
+  setRandomSheet(sheets)
   console.log(inputRange.min, inputRange.max)
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < totalSheets; i++) {
     // const numerator1 = getRandomNumber(2, 10);
     // const denominator1 = getRandomNumber(2, 10);
     // const numerator2 = getRandomNumber(2, 10);

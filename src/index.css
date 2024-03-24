@@ -51,3 +51,7 @@
    @apply px-20 p-1 text-gray-600 rounded-[5px] hover:text-white hover:bg-orange-500 ml-8 border border-gray-500
 }
 
+.tr-different-deno {
+ @apply flex  items-center mr-3
+}
+
