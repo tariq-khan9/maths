@@ -51,8 +51,8 @@ const Arithmetic = () => {
     max:9
   })
 
-  const [showRandom, setShowRandom] = useState(false)
-  const [totalSheets, setTotalSheets] = useState(8);
+  const [showRandomSheets, setShowRandomSheets] = useState(false)
+  const [totalSheets, setTotalSheets] = useState(4);
   const [showCheckModal, setShowCheckModal] = useState(false)
   const [showSolutionModal, setShowSolutionModal]= useState(false)
 
@@ -62,7 +62,7 @@ const Arithmetic = () => {
 
   useEffect(() => {
      handleNext()
-     console.log("operationa", operation, "same denom", sameDenoms)
+    
   
   }, [difficulty, operation, sameDenoms])
 
@@ -123,8 +123,7 @@ const Arithmetic = () => {
         if (numerator1 < 0) negativeCount++;
         if (denominator1 < 0) negativeCount++;
         if (numerator2 < 0) negativeCount++;
-        if (denominator2 < 0) negativeCount++;
-        console.log(negativeCount)
+        if (denominator2 < 0) negativeCount++;  
          // Check if difficulty is 3 and there are more than 1 negative numbers
         if ((difficulty === 3 && negativeCount>1) || (sameDenoms && denominator1<0)) {
           continue; // Skip this iteration and generate new numbers
@@ -180,7 +179,7 @@ const Arithmetic = () => {
         numerator2: numerator2,
         denominator2: denominator2
     });
-    console.log("check result", checkResult)
+    
   }
 
  
@@ -657,7 +656,7 @@ const Arithmetic = () => {
                                   </table>
                               </td>
 
-                              <td className='second-col flex flex-row px-4 px-4'>
+                              <td className='second-col flex flex-row px-4'>
                                   <table>
                                     <tbody>
                                         <tr>
@@ -740,13 +739,14 @@ const Arithmetic = () => {
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
               <button className='btn-tab'>Prebuild Sheet</button>
-              <button onClick={()=>setShowRandom(true)}  className='btn-tab'><DropdownRandomSheets setShowRandom={setShowRandom} setTotalSheets={setTotalSheets}/></button>
+              <button   className='btn-tab'> <DropdownRandomSheets setShowRandomSheets={setShowRandomSheets} setTotalSheets={setTotalSheets}/></button>
+               
               
             </div>
        
         </div>
 
-        <RandomSheets getRandomNumber={getRandomNumber} showRandom={showRandom} setShowRandom={setShowRandom} operation={operation} mixOperation={mixOperation} inputRange={inputRange}  difficulty={difficulty}/>
+        <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange}  difficulty={difficulty}/>
         <CheckModal showCheckModal={showCheckModal}  setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
         <SolutionModal showSolutionModal={showSolutionModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} randomNums={randomNums} operation={operation} mixOperation={mixOperation} inputs={inputs} sameDenoms={sameDenoms}/>
     </div>

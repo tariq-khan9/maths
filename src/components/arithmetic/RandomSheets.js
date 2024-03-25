@@ -1,12 +1,15 @@
-import React,{useState, useEffect} from 'react'
+import React,{useState, useEffect, useRef} from 'react'
 import CheckModal from './CheckModal'
 
-const RandomSheets = ({getRandomNumber, showRandom,setShowRandom, operation, mixOperation,difficulty, inputRange}) => {
+const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange}) => {
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
+  console.log("total sheets are", totalSheets)
+  console.log("what in array ", )
+  let sheets = totalSheets;
+  
  
   
-  const [randomSheet, setRandomSheet] = useState([])
-  const [totalSheets, setTotalSheets] = useState(8);
+  const [randomSheetArray, setRandomSheetArray] = useState([])
  const [showCheckModal, setShowCheckModal] = useState(false)
  const [result, setResult] = useState(false)
  
@@ -15,36 +18,62 @@ const [inputs, setInputs] = useState({
   denominator: 1
 })
 
+const isFirstRun = useRef(true);
 
   useEffect(() => {
-    
-    // Skip initial render
    
-  
-      
-      setShowRandom(true)
-      console.log(showRandom)
+    if (isFirstRun.current) {
+      // This block will run only on the first render
+      handleRandomSheets(sheets)
+      console.log("useeffect run ")
+      isFirstRun.current = false;
+      return;
+    }
    
-  
   }, [inputRange]);
+
+  // const handleRandomSheets = () => {
+  //   if (randomSheetArray.length > 0) {
+  //     // Clear randomSheet by setting it to an empty array
+  //     setRandomSheetArray([]);
+  //   }
+    
+  //   for (let i = 0; i < 5; i++) {
+  //     const numerator1 = getRandomNumber(2, 10);
+  //     const denominator1 = getRandomNumber(2, 10);
+  //     const numerator2 = getRandomNumber(2, 10);
+  //     const denominator2 = getRandomNumber(2, 10);
+  
+  //     randomSheetArray.push({
+  //       numerator1,
+  //       denominator1,
+  //       numerator2,
+  //       denominator2
+  //     });
+  //   }
+  
+  //   setRandomSheetArray(randomSheetArray);
+  // }
+  
    
  const handleRandomSheets = (sheets) => {
-  if (randomSheet.length > 0) {
+  if (randomSheetArray.length > 0) {
     // Clear randomSheet by setting it to an empty array
-    setRandomSheet([]);
+    setRandomSheetArray([]);
   }
-  setRandomSheet(sheets)
+  
   console.log(inputRange.min, inputRange.max)
-  for (let i = 0; i < totalSheets; i++) {
-    // const numerator1 = getRandomNumber(2, 10);
-    // const denominator1 = getRandomNumber(2, 10);
-    // const numerator2 = getRandomNumber(2, 10);
-    // const denominator2 = getRandomNumber(2, 10);
+  
+  for (let i = 0; i < sheets; i++) {
+    const numerator1 = getRandomNumber(2, 10);
+    const denominator1 = getRandomNumber(2, 10);
+    const numerator2 = getRandomNumber(2, 10);
+    const denominator2 = getRandomNumber(2, 10);
 
-      var numerator1 = getRandomNumber(inputRange.min, inputRange.max);
-      var denominator1 = getRandomNumber(inputRange.min, inputRange.max);
-      var numerator2 = getRandomNumber(inputRange.min, inputRange.max);
-      var denominator2 = getRandomNumber(inputRange.min, inputRange.max);
+      // var numerator1 = getRandomNumber(inputRange.min, inputRange.max);
+      // var denominator1 = getRandomNumber(inputRange.min, inputRange.max);
+      // var numerator2 = getRandomNumber(inputRange.min, inputRange.max);
+      // var denominator2 = getRandomNumber(inputRange.min, inputRange.max);
 
   
 
@@ -87,7 +116,7 @@ const [inputs, setInputs] = useState({
   //     }
   // } while (true);
   
-    randomSheet.push({
+    randomSheetArray.push({
       numerator1,
       denominator1,
       numerator2,
@@ -95,7 +124,8 @@ const [inputs, setInputs] = useState({
     });
 
   }
-  console.log(randomSheet)
+  console.log("this array ", randomSheetArray)
+  setRandomSheetArray(randomSheetArray)
 } 
 
 
@@ -118,12 +148,13 @@ const handleSubmit = (randomNum) => {
   setShowCheckModal(true)
 }
 
- if(showRandom)
+ if(showRandomSheets)
 
   return  (
     <div className='flex justify-center mt-6 rounded-md bg-slate-50'>
         <div className='px-auto grid grid-cols-2 bg-slate-50 gap-4'>
-                      {randomSheet.map((randomNum, index)=> (
+              
+                      {randomSheetArray.map((randomNum, index)=> (
                         <div className='px-[40px] pt-6 pb-4 bg-white mt-6 mx-4 rounded-md'>
                           <table key={index} className='digit'>
                             <tr className=''>

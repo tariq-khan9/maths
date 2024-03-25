@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
+import RandomSheets from './RandomSheets';
 
-const DropdownRandomSheets = ({setShowRandom, setTotalSheets}) => {
+const DropdownRandomSheets = ({setShowRandomSheets, setTotalSheets}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const showSheets = (sheets) => {
-    setTotalSheets(sheets)
-    setShowRandom(true)
+    
+    setTotalSheets(sheets);
+   
+    setShowRandomSheets(true)
+
+    setIsOpen(false)
   }
 
 
@@ -17,6 +22,7 @@ const DropdownRandomSheets = ({setShowRandom, setTotalSheets}) => {
 
 
   useEffect(() => {
+    
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
@@ -55,6 +61,7 @@ const DropdownRandomSheets = ({setShowRandom, setTotalSheets}) => {
           </button>
         </div>
       )}
+      
     </div>
   );
 };
