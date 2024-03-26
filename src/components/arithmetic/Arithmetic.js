@@ -184,7 +184,7 @@ const Arithmetic = () => {
   }
 
   const handleShowRandom = () => {
-    if(totalSheets>6){
+    if(totalSheets>1){
       setTemp(true)
     }
     else{
@@ -758,14 +758,14 @@ const Arithmetic = () => {
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
                <input onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
-              <button onClick={()=>handleShowRandom()}   className='btn-tab'>Random Sheets</button>
+              <button onClick={()=>setTemp(true)}   className='btn-tab'>Random Sheets</button>
                
               
             </div>
        
         </div>
-        {totalSheets>6 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange}  difficulty={difficulty}/>
+        {totalSheets>2 && 
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}/>
         }
         
 
