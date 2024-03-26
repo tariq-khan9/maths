@@ -5,6 +5,7 @@ import RandomSheets from './RandomSheets';
 import SolutionModal from './SolutionModal';
 import DropdownMulti from './DropdownMulti';
 import DropdownRandomSheets from './DropdownRandomSheets';
+import Temp from './Temp';
 
 
 
@@ -52,11 +53,11 @@ const Arithmetic = () => {
   })
 
   const [showRandomSheets, setShowRandomSheets] = useState(false)
-  const [totalSheets, setTotalSheets] = useState(4);
+  const [totalSheets, setTotalSheets] = useState(0);
   const [showCheckModal, setShowCheckModal] = useState(false)
   const [showSolutionModal, setShowSolutionModal]= useState(false)
 
-  
+  const [temp, setTemp] = useState(false)
   
  
 
@@ -182,7 +183,25 @@ const Arithmetic = () => {
     
   }
 
- 
+  const handleShowRandom = () => {
+    if(totalSheets>6){
+      setTemp(true)
+    }
+    else{
+      setTotalSheets(0)
+    }
+    
+  }
+
+  const handleSetTotalSheets = (value) => {
+    // if (value >= 2 && value <= 20 && value % 2 === 0) {
+    //   setTotalSheets(value);
+    // } else {
+    //   // Handle invalid values here, such as displaying an error message or ignoring the input
+    //   console.log("Invalid input. Please enter an even number between 6 and 20.");
+    // }
+    setTotalSheets(value)
+  };
 
   const handleCheck = () => {
     if(operation===1){
@@ -738,15 +757,20 @@ const Arithmetic = () => {
 
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <button className='btn-tab'>Prebuild Sheet</button>
-              <button   className='btn-tab'> <DropdownRandomSheets setShowRandomSheets={setShowRandomSheets} setTotalSheets={setTotalSheets}/></button>
+               <input onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
+              <button onClick={()=>handleShowRandom()}   className='btn-tab'>Random Sheets</button>
                
               
             </div>
        
         </div>
+        {totalSheets>6 && 
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange}  difficulty={difficulty}/>
+        }
+        
 
-        <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange}  difficulty={difficulty}/>
+        {/* <Temp totalSheets={totalSheets} temp={temp}/> */}
+        
         <CheckModal showCheckModal={showCheckModal}  setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
         <SolutionModal showSolutionModal={showSolutionModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} randomNums={randomNums} operation={operation} mixOperation={mixOperation} inputs={inputs} sameDenoms={sameDenoms}/>
     </div>

@@ -3,8 +3,8 @@ import CheckModal from './CheckModal'
 
 const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange}) => {
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
-  console.log("total sheets are", totalSheets)
-  console.log("what in array ", )
+  console.log("total sheets is an", totalSheets)
+  
   let sheets = totalSheets;
   
  
@@ -21,16 +21,21 @@ const [inputs, setInputs] = useState({
 const isFirstRun = useRef(true);
 
   useEffect(() => {
+     
+    // if (isFirstRun.current) {
+    //   // This block will run only on the first render
+    //   handleRandomSheets(sheets)
+    
+    //   isFirstRun.current = false;
+    //   return;
+    // }
+    setRandomSheetArray([])
+    handleRandomSheets(sheets/2)
    
-    if (isFirstRun.current) {
-      // This block will run only on the first render
-      handleRandomSheets(sheets)
-      console.log("useeffect run ")
-      isFirstRun.current = false;
-      return;
-    }
-   
-  }, [inputRange]);
+  
+  }, [totalSheets, showRandomSheets]);
+ 
+ 
 
   // const handleRandomSheets = () => {
   //   if (randomSheetArray.length > 0) {
@@ -57,10 +62,12 @@ const isFirstRun = useRef(true);
   
    
  const handleRandomSheets = (sheets) => {
-  if (randomSheetArray.length > 0) {
-    // Clear randomSheet by setting it to an empty array
-    setRandomSheetArray([]);
-  }
+  // if (randomSheetArray.length > 0) {
+  //   // Clear randomSheet by setting it to an empty array
+  //   setRandomSheetArray([]);
+  // }
+
+
   
   console.log(inputRange.min, inputRange.max)
   
@@ -153,7 +160,7 @@ const handleSubmit = (randomNum) => {
   return  (
     <div className='flex justify-center mt-6 rounded-md bg-slate-50'>
         <div className='px-auto grid grid-cols-2 bg-slate-50 gap-4'>
-              
+             
                       {randomSheetArray.map((randomNum, index)=> (
                         <div className='px-[40px] pt-6 pb-4 bg-white mt-6 mx-4 rounded-md'>
                           <table key={index} className='digit'>
