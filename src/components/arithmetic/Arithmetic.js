@@ -765,7 +765,7 @@ const Arithmetic = () => {
        
         </div>
         {totalSheets>2 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}/>
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
         }
         
 
