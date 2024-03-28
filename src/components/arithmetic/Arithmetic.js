@@ -4,8 +4,8 @@ import CheckModal from './CheckModal';
 import RandomSheets from './RandomSheets';
 import SolutionModal from './SolutionModal';
 import DropdownMulti from './DropdownMulti';
-import DropdownRandomSheets from './DropdownRandomSheets';
-import Temp from './Temp';
+
+
 
 
 
@@ -39,8 +39,8 @@ const Arithmetic = () => {
   const [result, setResult] = useState(false)
   const [difficulty, setDifficulty] =  useState(1)
   const [operation, setOperation] = useState(1);
-  const [sameDenoms, setSameDenoms] = useState(false)
-  const [mixOperation, setMixOperation] =  useState(1);
+  const [sameDenoms, setSameDenoms] = useState(true)
+  const [mixOperation, setMixOperation] =  useState(0);
 
   const [inputs, setInputs] = useState({
     numerator: 1,
@@ -57,17 +57,19 @@ const Arithmetic = () => {
   const [showCheckModal, setShowCheckModal] = useState(false)
   const [showSolutionModal, setShowSolutionModal]= useState(false)
 
-  const [temp, setTemp] = useState(false)
   
  
 
   useEffect(() => {
      handleNext()
+ 
+    
     
   
-  }, [difficulty, operation, sameDenoms])
+  }, [difficulty, operation, sameDenoms, showRandomSheets, totalSheets])
 
 
+ 
   
   
  
@@ -183,24 +185,33 @@ const Arithmetic = () => {
     
   }
 
-  const handleShowRandom = () => {
-    if(totalSheets>1){
-      setTemp(true)
-    }
-    else{
-      setTotalSheets(0)
-    }
+  // const handleShowRandom = () => {
+  //   if(totalSheets>2){
+  //     if(showRandomSheets){
+  //       setShowRandomSheets(false)
+  //       setShowRandomSheets(true)
+  //     }
+  //     else{
+  //       setShowRandomSheets(true)
+  //     }
+      
+  //   }
+  //   else{
+  //     setTotalSheets(0)
+  //   }
     
-  }
+  // }
 
   const handleSetTotalSheets = (value) => {
-    // if (value >= 2 && value <= 20 && value % 2 === 0) {
-    //   setTotalSheets(value);
-    // } else {
-    //   // Handle invalid values here, such as displaying an error message or ignoring the input
-    //   console.log("Invalid input. Please enter an even number between 6 and 20.");
-    // }
-    setTotalSheets(value)
+    const intValue = parseInt(value);
+  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 && intValue % 2 === 0) {
+    setTotalSheets(intValue);
+    setShowRandomSheets(true)
+  } else {
+    setTotalSheets(0)
+    console.log("Invalid input. Please enter an even number between 6 and 20.");
+  }
+    
   };
 
   const handleCheck = () => {
@@ -318,22 +329,7 @@ const Arithmetic = () => {
 
   return (
     <div className='px-[20px] w-full flex flex-col pt-12 mt-[30px]'>
-        <div className='buttons-div w-100 h-16 bg-slate-50 rounded-md flex items-center justify-center '> 
-            <div className='flex flex-row justify-center  items-center'>
-              
-              <div>
-              <div>
-      
-           </div>
-              </div>
-              {/* <button onClick={()=>handleOperation(1)} className={`btn-tab ${operation === 1 ? 'btn-selected' : ''}`}> </button> 
-              <button onClick={()=>handleOperation(2)} className={`btn-tab ${operation === 2 ? 'btn-selected' : ''}`}></button>
-              <button onClick={()=>handleOperation(3)} className={`btn-tab ${operation === 3 ? 'btn-selected' : ''}`}>Multiplication</button>
-              <button onClick={()=>handleOperation(4)} className={`btn-tab ${operation === 4 ? 'btn-selected' : ''}`}>Division</button>
-              <button onClick={()=>handleOperation(5)} className={`btn-tab ${operation === 0 ? 'btn-selected' : ''}`}>Mixed</button> */}
-            </div>
-       
-           </div>
+        
     {/******************************  difficulty level *******************************/}
        <div className='difficulty-div w-100 h-20 mt-6  bg-slate-50 rounded-md flex flex-row text-center  justify-center'>
           <div className=' w-[25%]  flex items-center justify-center'>
@@ -757,15 +753,17 @@ const Arithmetic = () => {
 
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-               <input onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
-              <button onClick={()=>setTemp(true)}   className='btn-tab'>Random Sheets</button>
-               
-              
+              <label className=' text-[20px] font-thin text-gray-700 mx-2'>Random Sheets:</label>
+               <input  className='input digit-input' onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
+               <div className=' items-end h-4'>
+                 <label className='text-[12px] italic mx-2 text-orange-500'>Please provide even numbers ranging from 6 to 20.</label>
+               </div>
+
             </div>
        
         </div>
         {totalSheets>2 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={temp}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
         }
         
 

@@ -1,19 +1,22 @@
 import React,{useState, useEffect, useRef} from 'react'
 import CheckModal from './CheckModal'
+import SolutionModal from './SolutionModal';
 
 const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
  
   
-  let sheets = 4;
+  let sheets = totalSheets/2;
   
  
   
-  const [randomSheetArray, setRandomSheetArray] = useState([])
+ const [randomSheetArray, setRandomSheetArray] = useState([])
  const [showCheckModal, setShowCheckModal] = useState(false)
- //const [showSolutionBtn, setShowSolutionBtn] = useState(false)
+ const [showSolutionModal, setShowSolutionModal] = useState(false)
+ const [showSubmitResultModal, setShowSubmitResultModal] = useState(false)
  const [submitted, setSubmitted] = useState(false)
  const [arrayResult, setArrayResult] = useState(false)
+ const [submitResult, setSubmitResult] =  useState(0)
  const [objectSubmitCount, setObjectSubmitCount] = useState(0)
  
 const [inputs, setInputs] = useState({
@@ -25,17 +28,18 @@ const isFirstRun = useRef(true);
 
   useEffect(() => {
      
-    if (isFirstRun.current) {
-      // This block will run only on the first render
-      handleRandomSheets(sheets)
+    // if (isFirstRun.current) {
+    //   // This block will run only on the first render
+    //   handleRandomSheets(sheets)
     
-      isFirstRun.current = false;
-      return;
-    }
+    //   isFirstRun.current = false;
+    //   return;
+    // }
+    handleRandomSheets(sheets)
     
    
   
-  }, [totalSheets, showRandomSheets, arrayResult, submitted]);
+  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult, submitted]);
  
  
 
@@ -143,6 +147,7 @@ const isFirstRun = useRef(true);
                     denominator2 === deno2 &&
                     divisionInputs.sign === '*')) {
                 setArrayResult(true)
+                setSubmitResult(submitResult+1)
             }
 
 
@@ -170,14 +175,14 @@ const isFirstRun = useRef(true);
                   item.numerator2 === randomNums.randomNums.numerator2 &&
                   item.denominator2 === randomNums.randomNums.denominator2) {
                   // If the properties match, return a new object with the updated 
-                  return { ...item, isSubmitted:true, objectResult: true };
+                  return { ...item, isSubmitted:true, objectResult: true, showSolutionModal: false };
               }
               // If the properties don't match, return the original object
               return item;
           });
           setRandomSheetArray(updatedArray);
-
-            console.log("object after update ", updatedArray)
+          setSubmitResult(submitResult+1)
+            
            
         } else {
           const updatedArray = randomSheetArray.map(item => {
@@ -187,7 +192,7 @@ const isFirstRun = useRef(true);
                 item.numerator2 === randomNums.randomNums.numerator2 &&
                 item.denominator2 === randomNums.randomNums.denominator2) {
                 // If the properties match, return a new object with the updated 
-                return { ...item, isSubmitted: true, objectResult: false };
+                return { ...item, isSubmitted: true, objectResult: false, showSolutionModal: false };
             }
             // If the properties don't match, return the original object
             return item;
@@ -201,21 +206,24 @@ const isFirstRun = useRef(true);
  
 }
 
+const handleShowSolutionModal = (index) => {
+  // Create a copy of the randomNums array
+  const updatedRandomNums = [...randomSheetArray];
+  // Set the showSolutionModal property of the specific object to true
+  updatedRandomNums[index] = { ...updatedRandomNums[index], showSolutionModal: true };
+  // Update the state with the modified array
+  setRandomSheetArray(updatedRandomNums);
+};
 
+const handleCloseSolutionModal = (index) => {
+  // Create a copy of the randomNums array
+  const updatedRandomNums = [...randomSheetArray];
+  // Set the showSolutionModal property of the specific object to true
+  updatedRandomNums[index] = { ...updatedRandomNums[index], showSolutionModal: false };
+  // Update the state with the modified array
+  setRandomSheetArray(updatedRandomNums);
+};
 
-
-
-  
-
-  const handleShowBtn = (randomNum) => {
-    const updatedRandomSheetArray = randomSheetArray.map(sheet => {
-      if (sheet === randomNum) {
-        return { ...sheet, showSolutionBtn: true };
-      }
-      return sheet;
-    });
-    setRandomSheetArray(updatedRandomSheetArray);
-  };
    
  const handleRandomSheets = (sheets) => {
   // if (randomSheetArray.length > 0) {
@@ -702,17 +710,17 @@ const handleSubmit = (randomNum) => {
                                 <div>
                                   { randomNums.objectResult ? (
                                     <div className='w-full flex justify-center'>
-                                    <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Exellent!</button>
+                                    <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Excellent!</button>
                                     </div>
                                   ) : (
                                     <div className='w-full flex justify-center'>
-                                    <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
+                                    <button  onClick={() => handleShowSolutionModal(index, true)} className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
                                     </div>
                                   )}
                                 </div>
                               ) : (
                                 <div className='w-full flex justify-center'>
-                                <button onClick={()=>handleArrayCheck({randomNums})} disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-green-500 hover:text-white hover:bg-green-800'>submitted</button>
+                                <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-green-500 hover:text-white hover:bg-green-800'>submitted</button>
                                 </div>
                               )}
 
@@ -724,6 +732,18 @@ const handleSubmit = (randomNum) => {
                           </div>
                         }
                           </div>
+                          {randomNums.showSolutionModal && (
+                            <SolutionModal
+                              showSolutionModal={randomNums.showSolutionModal}
+                              setShowSolutionModal={(value) => handleCloseSolutionModal(index, value)}
+                              setShowCheckModal={setShowCheckModal}
+                              randomNums={randomNums}
+                              operation={operation}
+                              mixOperation={mixOperation}
+                              inputs={inputs}
+                              sameDenoms={sameDenoms}
+                            />
+                          )}
                         </div>
                       ))} 
 
@@ -731,13 +751,54 @@ const handleSubmit = (randomNum) => {
                       <div className=' w-full text-center  items-center  my-4 '>
                          <button onClick={()=>{
                           console.log("object coutn" , objectSubmitCount)
-                          setSubmitted(true)}} disabled={objectSubmitCount<4}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
+                          setSubmitted(true)
+                          setShowSubmitResultModal(true)
+                          }} disabled={objectSubmitCount<4}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
                       </div>
               </div>
-            
+              
               <CheckModal showCheckModal={showCheckModal} setShowCheckModal={setShowCheckModal} result={arrayResult}/>
+              <SubmitResultModal showSubmitResultModal={showSubmitResultModal} setShowSubmitResultModal={setShowSubmitResultModal} submitResult={submitResult} sheets={sheets}/>
+           
     </div>
   )
 }
 
 export default RandomSheets
+
+
+const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, submitResult, sheets}) => {
+
+  const percentage = ((submitResult/sheets) * 100).toFixed(0);
+  const handleFinalSubmit = () => {
+    setShowSubmitResultModal(false)
+    console.log(submitResult, "and the sheets are ", sheets)
+  }
+  if(showSubmitResultModal)
+  {
+   return (
+     <div className=' fixed top-0 left-0 w-full h-full pt-48 bg-transparent w-scree  backdrop-blur-sm flex justify-center items-center '>
+ 
+       <div className='bg-white rounded-md z-40 w-96 max-h-85 mt-[80px] overflow-y-auto  p-4  mb-[200px]'>
+             <div className='text-center w-full'>
+               <h2 className='text-[25px] font-bold italic  text-green-800 '>Final Result</h2>
+               <div className='mt-10 mb-10 p-6'>
+                  {percentage<50 && 
+                    <p className='text-[22px] font-thin'><span className='text-orange-600 italic text-[25px]'>Oops!</span> you secured <span className='font-semibold text-[30px] italic'>{percentage}%</span> result.</p>
+                  }
+                    {percentage>=50 && 
+                    <p className='text-[22px] font-thin'><span className='text-green-800 italic text-[25px]'>Excellent!</span> you secured <span className='font-semibold text-[30px] italic'>{percentage}%</span> result.</p>
+                  }
+               </div>
+             </div>
+           
+                {/* ====================================== close button ======================================== */}
+                <div onClick={()=>handleFinalSubmit()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
+                      <button className='flex justify-items-end p-1 pb-2 px-8 text-white rounded-md bg-orange-500' >Close</button>
+              </div>
+ 
+       </div>
+    </div>
+   )
+  }
+}

@@ -50,6 +50,8 @@ const Dropdown = ({setOperation, setMixOperation, setSameDenoms}) => {
   };
 
   useEffect(() => {
+    setMixOperation(0)
+
     const handleClickOutside = (event) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
