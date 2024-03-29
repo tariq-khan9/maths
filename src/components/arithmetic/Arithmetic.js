@@ -8,11 +8,6 @@ import MathInput from './MathInput';
 
 
 
-
-
-
-
-
 const Arithmetic = () => {
 
   const [randomNums, setRandomNums] = useState({
@@ -63,6 +58,10 @@ const Arithmetic = () => {
 
   useEffect(() => {
      handleNext()
+     setInputs({
+      numerator: '',
+      denominator: ''
+     })
  
     
     
@@ -216,7 +215,7 @@ const Arithmetic = () => {
   };
 
   const handleCheck = () => {
-    if(operation===1){
+    if(operation===1 || mixOperation===1){
         if(sameDenoms){
           const checkDeno = randomNums.denominator1;
           const checkNum = randomNums.numerator1  + randomNums.numerator2;
@@ -240,7 +239,7 @@ const Arithmetic = () => {
         }
     }
 
-    if(operation===2){
+    if(operation===2 || mixOperation===2){
       if(sameDenoms){
         const checkDeno = randomNums.denominator1;
         const checkNum = randomNums.numerator1  - randomNums.numerator2;
@@ -265,14 +264,14 @@ const Arithmetic = () => {
       
     }
 
-    if(operation===3){
+    if(operation===3 || mixOperation===3){
       const checkNum = randomNums.numerator1 * randomNums.numerator2;
       const checkDeno = randomNums.denominator1 * randomNums.denominator2;
      
       var checkResult = checkNum / checkDeno;
     }
 
-    if(operation===4){
+    if(operation===4 || mixOperation===4){
         if(difficulty===1){
           var deno2 = parseInt(divisionInputs.denominator2)
           var num2 = parseInt(divisionInputs.numerator2)
@@ -314,7 +313,7 @@ const Arithmetic = () => {
      
     }
 
-    if(operation!==4){
+    if(operation!==4 || mixOperation!==4){
       var inputResult = inputs.numerator/inputs.denominator;
             
       // console.log("check deno", checkDeno, "check num ", checkNum)
@@ -365,7 +364,7 @@ const Arithmetic = () => {
        </div>
        
 
-
+              <button onClick={()=>console.log(divisionInputs)}>show</button>
    {/******************************  Drill section  *******************************/}
         <div className='card-drill'>
                 <h1 className='hd-drill text-green-600'>Try Out this Drill..</h1>
@@ -726,14 +725,14 @@ const Arithmetic = () => {
                                     <tbody>
                                         <tr>
                                             
-                                            <MathInput  type='numerator' setInputs={setInputs} inputs={inputs}/>
+                                            <MathInput  type='numerator' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                             
                                         </tr>
                                         <tr className='flex items-center mt-4 mb-4'>
                                             <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                         </tr>
                                         <tr>
-                                        <MathInput type='denominator' setInputs={setInputs} inputs={inputs}/>
+                                        <MathInput type='denominator' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                         </tr>
                                     </tbody>
                                   </table>
@@ -756,7 +755,6 @@ const Arithmetic = () => {
 
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
-              <MathInput/>
               <label className=' text-[20px] font-thin text-gray-700 mx-2'>Random Sheets:</label>
                <input  className='input digit-input' onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
                <div className=' items-end h-4'>

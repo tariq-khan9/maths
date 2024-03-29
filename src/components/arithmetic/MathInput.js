@@ -1,8 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const MathInput = ({setInputs, inputs, type}) => {
+const MathInput = ({setInputs, inputs, type, difficulty, operation, sameDenoms}) => {
   const [expression, setExpression] = useState('');
 
+  useEffect(() => {
+   
+    setExpression('')
+
+   
+   
+ 
+ }, [difficulty, operation, sameDenoms])
   const handleChange = (event) => {
     const inputValue = event.target.value;
     setExpression(inputValue);
