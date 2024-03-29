@@ -4,6 +4,7 @@ import CheckModal from './CheckModal';
 import RandomSheets from './RandomSheets';
 import SolutionModal from './SolutionModal';
 import DropdownMulti from './DropdownMulti';
+import MathInput from './MathInput';
 
 
 
@@ -724,13 +725,15 @@ const Arithmetic = () => {
                                   <table>
                                     <tbody>
                                         <tr>
-                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                            
+                                            <MathInput  type='numerator' setInputs={setInputs} inputs={inputs}/>
+                                            
                                         </tr>
                                         <tr className='flex items-center mt-4 mb-4'>
                                             <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                         </tr>
                                         <tr>
-                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                        <MathInput type='denominator' setInputs={setInputs} inputs={inputs}/>
                                         </tr>
                                     </tbody>
                                   </table>
@@ -753,6 +756,7 @@ const Arithmetic = () => {
 
         <div className='buttons-div w-100 h-16 bg-slate-50 mt-6 rounded-md flex items-center justify-center '> 
             <div className='flex flex-row justify-center  items-center'>
+              <MathInput/>
               <label className=' text-[20px] font-thin text-gray-700 mx-2'>Random Sheets:</label>
                <input  className='input digit-input' onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
                <div className=' items-end h-4'>
