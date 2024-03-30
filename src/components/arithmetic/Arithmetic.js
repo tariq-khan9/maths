@@ -62,6 +62,20 @@ const Arithmetic = () => {
       numerator: '',
       denominator: ''
      })
+
+     setAdditionInputs({
+      numerator1:'',
+      numerator2:'',
+      denominator1:'',
+      denominator2:''
+     })
+
+     setDivisionInputs({
+      numerator1:'',
+      numerator2:'',
+      denominator1:'',
+      denominator2:''
+     })
  
     
     
@@ -215,11 +229,14 @@ const Arithmetic = () => {
   };
 
   const handleCheck = () => {
+    let checkResult;
+    let inputResult = inputs.numerator/inputs.denominator;
+
     if(operation===1 || mixOperation===1){
         if(sameDenoms){
           const checkDeno = randomNums.denominator1;
           const checkNum = randomNums.numerator1  + randomNums.numerator2;
-          var checkResult = checkNum / checkDeno;
+           checkResult = checkNum / checkDeno;
         }
         else{
               const checkDeno = randomNums.denominator1 * randomNums.denominator2
@@ -230,20 +247,21 @@ const Arithmetic = () => {
                 && parseInt(additionInputs.numerator2)===randomNums.denominator1 
                 && parseInt(additionInputs.denominator2)===randomNums.denominator1)
               {
-                var checkResult = checkNum / checkDeno;
+                 checkResult = checkNum / checkDeno;
               }
               else{
-                var checkResult = checkNum;
+                 checkResult = checkNum;
               }
               
         }
+        inputResult = inputs.numerator/inputs.denominator;
     }
 
     if(operation===2 || mixOperation===2){
       if(sameDenoms){
         const checkDeno = randomNums.denominator1;
         const checkNum = randomNums.numerator1  - randomNums.numerator2;
-        var checkResult = checkNum / checkDeno;
+         checkResult = checkNum / checkDeno;
       }
       else{
             const checkDeno = randomNums.denominator1 * randomNums.denominator2
@@ -254,37 +272,45 @@ const Arithmetic = () => {
             && parseInt(additionInputs.numerator2)===randomNums.denominator1 
             && parseInt(additionInputs.denominator2)===randomNums.denominator1)
           {
-            var checkResult = checkNum / checkDeno;
+             checkResult = checkNum / checkDeno;
           }
           else{
-            var checkResult = checkNum;
+             checkResult = checkNum;
           }
             
       }
-      
+      inputResult = inputs.numerator/inputs.denominator;
     }
 
     if(operation===3 || mixOperation===3){
       const checkNum = randomNums.numerator1 * randomNums.numerator2;
       const checkDeno = randomNums.denominator1 * randomNums.denominator2;
      
-      var checkResult = checkNum / checkDeno;
+      checkResult = checkNum / checkDeno;
+      inputResult = inputs.numerator/inputs.denominator;
     }
 
     if(operation===4 || mixOperation===4){
         if(difficulty===1){
+          
           var deno2 = parseInt(divisionInputs.denominator2)
           var num2 = parseInt(divisionInputs.numerator2)
+          console.log(randomNums.numerator2, deno2, randomNums.denominator2, num2, divisionInputs.sign)
           if(randomNums.numerator2===deno2 && randomNums.denominator2===num2 && divisionInputs.sign==='*'){
-            setResult(true)
+            //setResult(true)
+            checkResult=1;
+            inputResult=1;
+            console.log(checkResult, inputResult)
           }
           else{
-            setResult(false)
+            //setResult(false)
+            checkResult=1;
+            inputResult=2;
           }
         }
 
         if(difficulty>1){
-       
+          console.log("operation 4 and diffi is >1==")
           var deno2 = parseInt(divisionInputs.denominator2)
           var num2 = parseInt(divisionInputs.numerator2)
           var deno1 = parseInt(divisionInputs.denominator1)
@@ -301,30 +327,32 @@ const Arithmetic = () => {
             && randomNums.numerator2===num2 
             && randomNums.denominator2===deno2  
             && divisionInputs.sign==='*')){
-            setResult(true)
+            //setResult(true)
+            checkResult=1;
+            inputResult=1;
           }
          
         
 
           else{
-            setResult(false)
+           // setResult(false)
+           checkResult=1;
+           inputResult=2;
           }
         }
      
     }
 
-    if(operation!==4 || mixOperation!==4){
-      var inputResult = inputs.numerator/inputs.denominator;
-            
-      // console.log("check deno", checkDeno, "check num ", checkNum)
-       if(checkResult===inputResult){
-         setResult(true)
-       }
-       else{
-         setResult(false)
-       }
+   
+  
+    if(checkResult===inputResult){
+      setResult(true)
     }
-      setShowCheckModal(true)
+    else{
+      setResult(false)
+    }
+  
+    setShowCheckModal(true)
   }
 
   return (
@@ -364,7 +392,7 @@ const Arithmetic = () => {
        </div>
        
 
-              <button onClick={()=>console.log(divisionInputs)}>show</button>
+       
    {/******************************  Drill section  *******************************/}
         <div className='card-drill'>
                 <h1 className='hd-drill text-green-600'>Try Out this Drill..</h1>
