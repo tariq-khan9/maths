@@ -8,6 +8,7 @@ import MathInput from './MathInput';
 
 
 
+
 const Arithmetic = () => {
 
   const [randomNums, setRandomNums] = useState({
@@ -57,6 +58,10 @@ const Arithmetic = () => {
  
 
   useEffect(() => {
+
+   
+
+
      handleNext()
      setInputs({
       numerator: '',
@@ -359,6 +364,8 @@ const Arithmetic = () => {
     <div className='px-[20px] w-full flex flex-col pt-12 mt-[30px]'>
         
     {/******************************  difficulty level *******************************/}
+    
+  
        <div className='difficulty-div w-100 h-20 mt-6  bg-slate-50 rounded-md flex flex-row text-center  justify-center'>
           <div className=' w-[25%]  flex items-center justify-center'>
               <DropdownMulti setOperation={setOperation} setMixOperation={setMixOperation} setSameDenoms={setSameDenoms}/>

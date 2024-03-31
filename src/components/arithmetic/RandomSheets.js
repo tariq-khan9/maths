@@ -231,11 +231,12 @@ const handleCloseSolutionModal = (index) => {
   //   setRandomSheetArray([]);
   // }
 
-
+  const getRandomOperation = () => Math.floor(Math.random() * 4) + 1;
   
   console.log(inputRange.min, inputRange.max)
   
   for (let i = 0; i < sheets; i++) {
+    const operation = getRandomOperation()
     const numerator1 = getRandomNumber(2, 10);
     const denominator1 = getRandomNumber(2, 10);
     const numerator2 = getRandomNumber(2, 10);
@@ -292,6 +293,7 @@ const handleCloseSolutionModal = (index) => {
       denominator1,
       numerator2,
       denominator2,
+      operation,
       isSubmitted: false,
       objectResult: false
     });
