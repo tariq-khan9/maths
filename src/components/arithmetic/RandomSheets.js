@@ -7,7 +7,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
  
   
   let sheets = totalSheets/2;
-  
+  console.log("in the top operationa and mix are  ", operation, mixOperation)
  
   
  const [randomSheetArray, setRandomSheetArray] = useState([])
@@ -236,7 +236,10 @@ const handleCloseSolutionModal = (index) => {
   console.log(inputRange.min, inputRange.max)
   
   for (let i = 0; i < sheets; i++) {
-    const operation = getRandomOperation()
+    if(operation===0){
+      var arrayOperation = getRandomOperation()
+    }
+ 
     const numerator1 = getRandomNumber(2, 10);
     const denominator1 = getRandomNumber(2, 10);
     const numerator2 = getRandomNumber(2, 10);
@@ -293,7 +296,7 @@ const handleCloseSolutionModal = (index) => {
       denominator1,
       numerator2,
       denominator2,
-      operation,
+      arrayOperation,
       isSubmitted: false,
       objectResult: false
     });

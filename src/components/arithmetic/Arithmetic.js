@@ -9,6 +9,7 @@ import MathInput from './MathInput';
 
 
 
+
 const Arithmetic = () => {
 
   const [randomNums, setRandomNums] = useState({
@@ -365,7 +366,7 @@ const Arithmetic = () => {
         
     {/******************************  difficulty level *******************************/}
     
-  
+     
        <div className='difficulty-div w-100 h-20 mt-6  bg-slate-50 rounded-md flex flex-row text-center  justify-center'>
           <div className=' w-[25%]  flex items-center justify-center'>
               <DropdownMulti setOperation={setOperation} setMixOperation={setMixOperation} setSameDenoms={setSameDenoms}/>
