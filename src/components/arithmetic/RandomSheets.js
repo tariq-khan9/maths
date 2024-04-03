@@ -725,7 +725,7 @@ const handleSubmit = (randomNum) => {
                                 </div>
                               ) : (
                                 <div className='w-full flex justify-center'>
-                                <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-green-500 hover:text-white hover:bg-green-800'>submitted</button>
+                                <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-yellow-300 italic'>Submitted</button>
                                 </div>
                               )}
 
@@ -733,7 +733,7 @@ const handleSubmit = (randomNum) => {
                            :
                            <div className='w-full flex justify-center '>
                        
-                               <button onClick={()=>handleArrayCheck({randomNums})} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>submit</button>
+                               <button onClick={()=>handleArrayCheck({randomNums})} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>Submit</button>
                           </div>
                         }
                           </div>

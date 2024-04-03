@@ -1,4 +1,5 @@
 import React from 'react'
+import TeX from '@matejmazur/react-katex';
 
 
 
@@ -18,35 +19,16 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                <div className='overflow-y-auto max-h-[380px]'>
                     <div>
                                 <h2 className='font-bold'>Your answer:</h2>
-                                <table className='solution-digit'>
+                                <div className='solution-digit'>
                                       {(inputs.numerator || inputs.denominator) &&
-                                                <tr className=''>
-                                                
-                                                    <td className='= px-2'>
-                                                    <tr>=</tr>
-                                                    </td>
-                                                    <td className='first-col px-1'>
-                                                       
-                                                             <table className=''>
-                                                             <tbody className=''>
-                                                                 <tr className=''>
-                                                                     {inputs.numerator}
-                                                                 </tr>
-                                                                 <tr className='flex items-center mt-1 mb-1'>
-                                                                     <div class="border-t border-2  border-gray-500   w-5 mx-auto"></div>
-                                                                 </tr>
-                                                                 <tr>
-                                                                     {inputs.denominator}
-                                                                 </tr>
-                                                             </tbody>
-                                                         </table>
-                                                        
-                                                  
-                                                    </td>   
+                                                <div className='text-[20px] flex items-start mb-2'>
+                                                  <TeX>{`\= \\frac{${inputs.numerator}}{${inputs.denominator}}`}</TeX>
+
+                                                 </div>
                                                                                              
-                                                </tr>
+                                                
                                         }
-                                        </table>
+                                </div>
                             </div>
                 
                             <div className=''>
@@ -58,6 +40,9 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                 {/**========================  first row =========================================**/}
                                         <table className='solution-digit'>
                                                 <tr className=''>
+                                                <div className='text-[20px] flex items-start mb-2'>
+                                             
+                                                 </div>
                                                     <td className='= px-2'>
                                                     <tr>=</tr>
                                                     </td>

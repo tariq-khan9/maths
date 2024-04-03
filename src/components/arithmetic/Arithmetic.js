@@ -41,8 +41,8 @@ const Arithmetic = () => {
   const [mixOperation, setMixOperation] =  useState(0);
 
   const [inputs, setInputs] = useState({
-    numerator: 1,
-    denominator: 1
+    numerator: 0,
+    denominator: 0
   })
 
   const [inputRange, setInputRange] = useState({
