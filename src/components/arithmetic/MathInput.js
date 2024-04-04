@@ -6,11 +6,9 @@ const MathInput = ({setInputs, inputs, type, difficulty, operation, sameDenoms})
   useEffect(() => {
    
     setExpression('')
-
-   
-   
  
  }, [difficulty, operation, sameDenoms])
+
   const handleChange = (event) => {
     const inputValue = event.target.value;
     setExpression(inputValue);

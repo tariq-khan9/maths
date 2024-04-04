@@ -224,7 +224,7 @@ const Arithmetic = () => {
 
   const handleSetTotalSheets = (value) => {
     const intValue = parseInt(value);
-  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 && intValue % 2 === 0) {
+  if (!isNaN(intValue) && intValue >= 3 && intValue <= 20 ) {
     setTotalSheets(intValue);
     setShowRandomSheets(true)
   } else {

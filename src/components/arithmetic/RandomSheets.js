@@ -6,8 +6,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
  
   
-  let sheets = totalSheets/2;
-  console.log("in the top operationa and mix are  ", operation, mixOperation)
+  let sheets = totalSheets;
  
   
  const [randomSheetArray, setRandomSheetArray] = useState([])
@@ -19,57 +18,30 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
  const [submitResult, setSubmitResult] =  useState(0)
  const [objectSubmitCount, setObjectSubmitCount] = useState(0)
  
-const [inputs, setInputs] = useState({
+ const [inputs, setInputs] = useState(randomSheetArray.map(() => ({
   numerator: 1,
   denominator: 1
-})
+})));
 
-const isFirstRun = useRef(true);
+
 
   useEffect(() => {
      
-    // if (isFirstRun.current) {
-    //   // This block will run only on the first render
-    //   handleRandomSheets(sheets)
-    
-    //   isFirstRun.current = false;
-    //   return;
-    // }
+   
     handleRandomSheets(sheets)
-    
    
   
-  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult, submitted]);
+   
+  
+  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult]);
  
  
 
-  // const handleRandomSheets = () => {
-  //   if (randomSheetArray.length > 0) {
-  //     // Clear randomSheet by setting it to an empty array
-  //     setRandomSheetArray([]);
-  //   }
-    
-  //   for (let i = 0; i < 5; i++) {
-  //     const numerator1 = getRandomNumber(2, 10);
-  //     const denominator1 = getRandomNumber(2, 10);
-  //     const numerator2 = getRandomNumber(2, 10);
-  //     const denominator2 = getRandomNumber(2, 10);
-  
-  //     randomSheetArray.push({
-  //       numerator1,
-  //       denominator1,
-  //       numerator2,
-  //       denominator2
-  //     });
-  //   }
-  
-  //   setRandomSheetArray(randomSheetArray);
-  // }
+
 
   const handleArrayCheck = (randomNums) => {
     setObjectSubmitCount(objectSubmitCount+1)
     const { numerator1, denominator1, numerator2, denominator2, showSolutionBtn } = randomNums.randomNums;
-    console.log(numerator1, numerator2, showSolutionBtn);
     if (operation === 1) {
         if (sameDenoms) {
             const checkDeno = denominator1;
@@ -167,7 +139,6 @@ const isFirstRun = useRef(true);
          var newInputResult = parseFloat(inputResult).toFixed(2)
          console.log("check deno", newCheckResult, "check num ", newInputResult)
         if (newCheckResult === newInputResult) {
-          //  const updatedSheet = { ...randomNums.randomNums, isSubmitted: true, objectResult: true};
             const updatedArray = randomSheetArray.map(item => {
               // Compare properties of the objects to determine if they are equal
               if (item.numerator1 === randomNums.randomNums.numerator1 &&
@@ -200,8 +171,6 @@ const isFirstRun = useRef(true);
         setRandomSheetArray(updatedArray);
             
         }
-
-      
     }
  
 }
@@ -226,14 +195,12 @@ const handleCloseSolutionModal = (index) => {
 
    
  const handleRandomSheets = (sheets) => {
-  // if (randomSheetArray.length > 0) {
-  //   // Clear randomSheet by setting it to an empty array
-  //   setRandomSheetArray([]);
-  // }
+
+   const updatedArray= [];
 
   const getRandomOperation = () => Math.floor(Math.random() * 4) + 1;
   
-  console.log(inputRange.min, inputRange.max)
+ 
   
   for (let i = 0; i < sheets; i++) {
     if(operation===0){
@@ -291,7 +258,7 @@ const handleCloseSolutionModal = (index) => {
   //     }
   // } while (true);
   
-    randomSheetArray.push({
+    updatedArray.push({
       numerator1,
       denominator1,
       numerator2,
@@ -302,8 +269,8 @@ const handleCloseSolutionModal = (index) => {
     });
 
   }
-  console.log("this array ", randomSheetArray)
-  setRandomSheetArray(randomSheetArray)
+
+  setRandomSheetArray(updatedArray)
 } 
 
 
@@ -607,7 +574,7 @@ const handleSubmit = (randomNum) => {
                                                                 <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
                                                             </tr>
                                                             <tr>
-                                                            <input onChange={(e)=>setAdditionInputs({...additionInputs, denominator1: e.target.value})} id='num' className='input digit-input'/>
+                                                            <input required onChange={(e)=>setAdditionInputs({...additionInputs, denominator1: e.target.value})} id='num' className='input digit-input'/>
                                                             </tr>
                                                         </tbody>
                                                       </table>
@@ -691,13 +658,29 @@ const handleSubmit = (randomNum) => {
                                             <table>
                                               <tbody>
                                                   <tr>
-                                                      <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                                  <input
+                                                    onChange={(e, index) => {
+                                                      const newInputs = [...inputs];
+                                                      newInputs[index] = { ...newInputs[index], numerator: e.target.value };
+                                                      setInputs(newInputs);
+                                                    }}
+                                                    id={`num_${index}`}
+                                                    className='input digit-input'
+                                                  />
                                                   </tr>
                                                   <tr className='flex items-center mt-4 mb-4'>
                                                       <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                                   </tr>
                                                   <tr>
-                                                    <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                                  <input
+                                                    onChange={(e, index) => {
+                                                      const newInputs = [...inputs];
+                                                      newInputs[index] = { ...newInputs[index], denominator: e.target.value };
+                                                      setInputs(newInputs);
+                                                    }}
+                                                    id={`deno_${index}`}
+                                                    className='input digit-input'
+                                                  />
                                                   </tr>
                                               </tbody>
                                             </table>
@@ -711,23 +694,26 @@ const handleSubmit = (randomNum) => {
                        
                           {randomNums.isSubmitted?
                              <div className='w-full'>
-                             {submitted ? (
-                                <div>
-                                  { randomNums.objectResult ? (
-                                    <div className='w-full flex justify-center'>
-                                    <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Excellent!</button>
+                                {submitted ? (
+                                    <div>
+                                    
+                                      { randomNums.objectResult ? (
+                                        <div className='w-full flex justify-center'>
+                                          
+                                        <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Excellent!</button>
+                                        </div>
+                                      ) : (
+                                        <div className='w-full flex justify-center'>
+                                            {console.log("after submited random objectresult ", randomNums.objectResult)}
+                                        <button  onClick={() => handleShowSolutionModal(index, true)} className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
+                                        </div>
+                                      )}
                                     </div>
                                   ) : (
                                     <div className='w-full flex justify-center'>
-                                    <button  onClick={() => handleShowSolutionModal(index, true)} className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
+                                    <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-yellow-300 italic'>Submitted</button>
                                     </div>
                                   )}
-                                </div>
-                              ) : (
-                                <div className='w-full flex justify-center'>
-                                <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-yellow-300 italic'>Submitted</button>
-                                </div>
-                              )}
 
                             </div>
                            :
@@ -755,10 +741,9 @@ const handleSubmit = (randomNum) => {
 
                       <div className=' w-full text-center  items-center  my-4 '>
                          <button onClick={()=>{
-                          console.log("object coutn" , objectSubmitCount)
                           setSubmitted(true)
                           setShowSubmitResultModal(true)
-                          }} disabled={objectSubmitCount<4}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
+                          }} disabled={objectSubmitCount<totalSheets}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
                       </div>
               </div>
               
