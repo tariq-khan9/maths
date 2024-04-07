@@ -20,9 +20,10 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                     <div>
                                 <h2 className='font-bold'>Your answer:</h2>
                                 <div className='solution-digit'>
-                                      {(inputs.numerator!==0 || inputs.denominator!==0) &&
+                                    {console.log(inputs)}
+                                      {(inputs.inputNum!==0 || inputs.inputDenom!==0) &&
                                                 <div className='text-[20px] flex items-start mb-2'>
-                                                  <TeX>{`\= \\frac{${inputs.numerator}}{${inputs.denominator}}`}</TeX>
+                                                  <TeX>{`\= \\frac{${inputs.inputNum}}{${inputs.inputDenom}}`}</TeX>
 
                                                  </div>
                                                                                              

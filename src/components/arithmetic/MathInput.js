@@ -4,7 +4,7 @@ const MathInput = ({setInputs, inputs, type, difficulty, operation, sameDenoms})
   const [expression, setExpression] = useState('');
 
   useEffect(() => {
-   
+    console.log("inputs in mathInput", inputs)
     setExpression('')
  
  }, [difficulty, operation, sameDenoms])
@@ -13,25 +13,25 @@ const MathInput = ({setInputs, inputs, type, difficulty, operation, sameDenoms})
     const inputValue = event.target.value;
     setExpression(inputValue);
     // Evaluate the expression and update the result
-    if(type==='numerator'){
+    if(type==='inputNum'){
       try {
         const evalResult = eval(inputValue); // Use of eval can be dangerous, make sure to validate the input
        
        // setResult(isNaN(evalResult) ? null : evalResult); // Check if the result is a valid number
-        setInputs({...inputs, numerator: isNaN(evalResult) ? null : evalResult })
+        setInputs({...inputs, inputNum: isNaN(evalResult) ? null : evalResult })
       } catch (error) {
-        setInputs({...inputs, numerator:  null  })
+        setInputs({...inputs, inputNum:  null  })
       }
     }
 
-    if(type==='denominator'){
+    if(type==='inputDenom'){
       try {
         const evalResult = eval(inputValue); // Use of eval can be dangerous, make sure to validate the input
        
        // setResult(isNaN(evalResult) ? null : evalResult); // Check if the result is a valid number
-        setInputs({...inputs, denominator: isNaN(evalResult) ? null : evalResult })
+        setInputs({...inputs, inputDenom: isNaN(evalResult) ? null : evalResult })
       } catch (error) {
-        setInputs({...inputs, denominator:  null  })
+        setInputs({...inputs, inputDenom:  null  })
       }
     }
   

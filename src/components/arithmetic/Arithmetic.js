@@ -5,6 +5,9 @@ import RandomSheets from './RandomSheets';
 import SolutionModal from './SolutionModal';
 import DropdownMulti from './DropdownMulti';
 import MathInput from './MathInput';
+import {Toaster, toast} from 'sonner'
+import Test from './Test';
+
 
 
 
@@ -41,8 +44,8 @@ const Arithmetic = () => {
   const [mixOperation, setMixOperation] =  useState(0);
 
   const [inputs, setInputs] = useState({
-    numerator: 0,
-    denominator: 0
+    inputNum: 0,
+    inputDenom: 0
   })
 
   const [inputRange, setInputRange] = useState({
@@ -65,8 +68,8 @@ const Arithmetic = () => {
 
      handleNext()
      setInputs({
-      numerator: '',
-      denominator: ''
+      inputNum: '',
+      inputDenom: ''
      })
 
      setAdditionInputs({
@@ -235,8 +238,12 @@ const Arithmetic = () => {
   };
 
   const handleCheck = () => {
+    if(!inputs.inputNum || !inputs.inputDenom){
+      toast.error('Please enter numerator and denominator for inputs.')
+      return;
+    }
     let checkResult;
-    let inputResult = inputs.numerator/inputs.denominator;
+    let inputResult = inputs.inputNum/inputs.inputDenom;
 
     if(operation===1 || mixOperation===1){
         if(sameDenoms){
@@ -260,7 +267,7 @@ const Arithmetic = () => {
               }
               
         }
-        inputResult = inputs.numerator/inputs.denominator;
+        inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
     if(operation===2 || mixOperation===2){
@@ -293,7 +300,7 @@ const Arithmetic = () => {
       const checkDeno = randomNums.denominator1 * randomNums.denominator2;
      
       checkResult = checkNum / checkDeno;
-      inputResult = inputs.numerator/inputs.denominator;
+      inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
     if(operation===4 || mixOperation===4){
@@ -761,14 +768,14 @@ const Arithmetic = () => {
                                     <tbody>
                                         <tr>
                                             
-                                            <MathInput  type='numerator' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
+                                            <MathInput  type='inputNum' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                             
                                         </tr>
                                         <tr className='flex items-center mt-4 mb-4'>
                                             <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                         </tr>
                                         <tr>
-                                        <MathInput type='denominator' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
+                                        <MathInput type='inputDenom' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                         </tr>
                                     </tbody>
                                   </table>
@@ -809,6 +816,8 @@ const Arithmetic = () => {
         
         <CheckModal showCheckModal={showCheckModal}  setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
         <SolutionModal showSolutionModal={showSolutionModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} randomNums={randomNums} operation={operation} mixOperation={mixOperation} inputs={inputs} sameDenoms={sameDenoms}/>
+
+        <Toaster position="top-center" />
     </div>
   )
 }

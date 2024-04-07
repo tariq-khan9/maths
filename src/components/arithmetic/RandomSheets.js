@@ -1,6 +1,9 @@
 import React,{useState, useEffect, useRef} from 'react'
 import CheckModal from './CheckModal'
 import SolutionModal from './SolutionModal';
+import MathArrayInput from './MathArrayInput'
+import {  toast } from 'sonner'
+
 
 const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
   // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
@@ -40,6 +43,10 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
 
 
   const handleArrayCheck = (randomNums) => {
+    if(!randomNums.randomNums.inputNum || !randomNums.randomNums.inputDenom){
+      toast.error('Please enter numerator and denominator for inputs.')
+      return;
+    }
     setObjectSubmitCount(objectSubmitCount+1)
     const { numerator1, denominator1, numerator2, denominator2, showSolutionBtn } = randomNums.randomNums;
     if (operation === 1) {
@@ -132,9 +139,9 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
     }
 
     if (operation !== 4) {
-        var inputResult = inputs.numerator / inputs.denominator;
+        var inputResult = randomNums.randomNums.inputNum / randomNums.randomNums.inputDenom;
 
-        
+        console.log(inputResult)
          var newCheckResult = parseFloat(checkResult).toFixed(2);
          var newInputResult = parseFloat(inputResult).toFixed(2)
          console.log("check deno", newCheckResult, "check num ", newInputResult)
@@ -264,14 +271,23 @@ const handleCloseSolutionModal = (index) => {
       numerator2,
       denominator2,
       arrayOperation,
+      inputNum:'',
+      inputDenom:'',
       isSubmitted: false,
       objectResult: false
+
     });
 
   }
 
   setRandomSheetArray(updatedArray)
 } 
+
+const handleArrayInputChange = (index, field, value) => {
+  const newData = [...randomSheetArray];
+  newData[index][field] = parseInt(value);
+  setRandomSheetArray(newData);
+};
 
 
 const handleSubmit = (randomNum) => {
@@ -281,7 +297,7 @@ const handleSubmit = (randomNum) => {
 
   const checkResult = checkNum/checkDeno
 
-  const inputResult = inputs.numerator/inputs.denominator;
+  const inputResult = randomNum.inputNum/randomNum.inputDenom;
 
   if(checkResult===inputResult){
     setArrayResult(true)
@@ -657,32 +673,17 @@ const handleSubmit = (randomNum) => {
                                         <td className='inputs px-4'>
                                             <table>
                                               <tbody>
+                                             
                                                   <tr>
-                                                  <input
-                                                    onChange={(e, index) => {
-                                                      const newInputs = [...inputs];
-                                                      newInputs[index] = { ...newInputs[index], numerator: e.target.value };
-                                                      setInputs(newInputs);
-                                                    }}
-                                                    id={`num_${index}`}
-                                                    className='input digit-input'
-                                                  />
+                                                  <MathArrayInput  type='inputNum' index={index}  randomSheetArray={randomSheetArray} setRandomSheetArray={setRandomSheetArray} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                                   </tr>
                                                   <tr className='flex items-center mt-4 mb-4'>
                                                       <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                                   </tr>
                                                   <tr>
-                                                  <input
-                                                    onChange={(e, index) => {
-                                                      const newInputs = [...inputs];
-                                                      newInputs[index] = { ...newInputs[index], denominator: e.target.value };
-                                                      setInputs(newInputs);
-                                                    }}
-                                                    id={`deno_${index}`}
-                                                    className='input digit-input'
-                                                  />
+                                                  <MathArrayInput  type='inputDenom' index={index}  randomSheetArray={randomSheetArray} setRandomSheetArray={setRandomSheetArray} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                                   </tr>
-                                              </tbody>
+                                               </tbody>
                                             </table>
                                         </td>
                                       </tr>
@@ -731,7 +732,7 @@ const handleSubmit = (randomNum) => {
                               randomNums={randomNums}
                               operation={operation}
                               mixOperation={mixOperation}
-                              inputs={inputs}
+                              inputs={randomNums}
                               sameDenoms={sameDenoms}
                             />
                           )}
@@ -786,7 +787,7 @@ const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, sub
                 <div onClick={()=>handleFinalSubmit()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
                       <button className='flex justify-items-end p-1 pb-2 px-8 text-white rounded-md bg-orange-500' >Close</button>
               </div>
- 
+             
        </div>
     </div>
    )
