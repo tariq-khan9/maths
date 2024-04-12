@@ -1,10 +1,17 @@
+import { useEffect } from "react";
 import Arithmetic from "./components/arithmetic/Arithmetic";
 import Navbar from "./components/Navbar";
 import Sidebar from "./components/Sidebar";
+import 'katex/dist/katex.min.css';
+
+
 
 
 
 function App() {
+
+
+
   return (
     <div className="">
         <Navbar/>

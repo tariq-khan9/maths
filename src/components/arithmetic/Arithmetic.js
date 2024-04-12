@@ -4,8 +4,9 @@ import CheckModal from './CheckModal';
 import RandomSheets from './RandomSheets';
 import SolutionModal from './SolutionModal';
 import DropdownMulti from './DropdownMulti';
-
-
+import MathInput from './MathInput';
+import {Toaster, toast} from 'sonner'
+import Test from './Test';
 
 
 
@@ -43,8 +44,8 @@ const Arithmetic = () => {
   const [mixOperation, setMixOperation] =  useState(0);
 
   const [inputs, setInputs] = useState({
-    numerator: 1,
-    denominator: 1
+    inputNum: 0,
+    inputDenom: 0
   })
 
   const [inputRange, setInputRange] = useState({
@@ -61,7 +62,29 @@ const Arithmetic = () => {
  
 
   useEffect(() => {
+
+   
+
+
      handleNext()
+     setInputs({
+      inputNum: '',
+      inputDenom: ''
+     })
+
+     setAdditionInputs({
+      numerator1:'',
+      numerator2:'',
+      denominator1:'',
+      denominator2:''
+     })
+
+     setDivisionInputs({
+      numerator1:'',
+      numerator2:'',
+      denominator1:'',
+      denominator2:''
+     })
  
     
     
@@ -83,6 +106,14 @@ const Arithmetic = () => {
     return randomNumber;
   }
 
+  const getRandomOperation = () => {
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * 4) + 1;
+    } while (randomNum === 3); 
+    return randomNum;
+  };
+
  
 
   const handleNext = () => {
@@ -90,7 +121,7 @@ const Arithmetic = () => {
 
     if(mixOperation>0){
        setOperation(0)
-       const operator = getRandomNumber(1, 4)
+       const operator = getRandomOperation()
        setMixOperation(operator)
     }
 
@@ -204,22 +235,25 @@ const Arithmetic = () => {
 
   const handleSetTotalSheets = (value) => {
     const intValue = parseInt(value);
-  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 && intValue % 2 === 0) {
+  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 ) {
     setTotalSheets(intValue);
     setShowRandomSheets(true)
   } else {
     setTotalSheets(0)
-    console.log("Invalid input. Please enter an even number between 6 and 20.");
+
   }
     
   };
 
   const handleCheck = () => {
-    if(operation===1){
+    let checkResult;
+    let inputResult = inputs.inputNum/inputs.inputDenom;
+
+    if(operation===1 || mixOperation===1){
         if(sameDenoms){
           const checkDeno = randomNums.denominator1;
           const checkNum = randomNums.numerator1  + randomNums.numerator2;
-          var checkResult = checkNum / checkDeno;
+           checkResult = checkNum / checkDeno;
         }
         else{
               const checkDeno = randomNums.denominator1 * randomNums.denominator2
@@ -230,20 +264,22 @@ const Arithmetic = () => {
                 && parseInt(additionInputs.numerator2)===randomNums.denominator1 
                 && parseInt(additionInputs.denominator2)===randomNums.denominator1)
               {
-                var checkResult = checkNum / checkDeno;
+                 checkResult = checkNum / checkDeno;
               }
               else{
-                var checkResult = checkNum;
+                 checkResult = checkNum;
               }
               
         }
+        inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
-    if(operation===2){
+    if(operation===2 || mixOperation===2){
       if(sameDenoms){
         const checkDeno = randomNums.denominator1;
         const checkNum = randomNums.numerator1  - randomNums.numerator2;
-        var checkResult = checkNum / checkDeno;
+         checkResult = checkNum / checkDeno;
+        
       }
       else{
             const checkDeno = randomNums.denominator1 * randomNums.denominator2
@@ -254,37 +290,45 @@ const Arithmetic = () => {
             && parseInt(additionInputs.numerator2)===randomNums.denominator1 
             && parseInt(additionInputs.denominator2)===randomNums.denominator1)
           {
-            var checkResult = checkNum / checkDeno;
+             checkResult = checkNum / checkDeno;
           }
           else{
-            var checkResult = checkNum;
+             checkResult = checkNum;
           }
             
       }
-      
+      inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
-    if(operation===3){
+    if(operation===3 || mixOperation===3){
       const checkNum = randomNums.numerator1 * randomNums.numerator2;
       const checkDeno = randomNums.denominator1 * randomNums.denominator2;
      
-      var checkResult = checkNum / checkDeno;
+      checkResult = checkNum / checkDeno;
+      inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
-    if(operation===4){
+    if(operation===4 || mixOperation===4){
         if(difficulty===1){
+          
           var deno2 = parseInt(divisionInputs.denominator2)
           var num2 = parseInt(divisionInputs.numerator2)
+          console.log(randomNums.numerator2, deno2, randomNums.denominator2, num2, divisionInputs.sign)
           if(randomNums.numerator2===deno2 && randomNums.denominator2===num2 && divisionInputs.sign==='*'){
-            setResult(true)
+            //setResult(true)
+            checkResult=1;
+            inputResult=1;
+            console.log(checkResult, inputResult)
           }
           else{
-            setResult(false)
+            //setResult(false)
+            checkResult=1;
+            inputResult=2;
           }
         }
 
         if(difficulty>1){
-       
+          console.log("operation 4 and diffi is >1==")
           var deno2 = parseInt(divisionInputs.denominator2)
           var num2 = parseInt(divisionInputs.numerator2)
           var deno1 = parseInt(divisionInputs.denominator1)
@@ -301,36 +345,41 @@ const Arithmetic = () => {
             && randomNums.numerator2===num2 
             && randomNums.denominator2===deno2  
             && divisionInputs.sign==='*')){
-            setResult(true)
+            //setResult(true)
+            checkResult=1;
+            inputResult=1;
           }
          
         
 
           else{
-            setResult(false)
+           // setResult(false)
+           checkResult=1;
+           inputResult=2;
           }
         }
      
     }
 
-    if(operation!==4){
-      var inputResult = inputs.numerator/inputs.denominator;
-            
-      // console.log("check deno", checkDeno, "check num ", checkNum)
-       if(checkResult===inputResult){
-         setResult(true)
-       }
-       else{
-         setResult(false)
-       }
+   
+    
+    if(checkResult==inputResult){
+      setResult(true)
+      console.log("result is true", result)
     }
-      setShowCheckModal(true)
+    else{
+      setResult(false)
+    }
+    console.log("result right before check", result)
+    setShowCheckModal(true)
   }
 
   return (
     <div className='px-[20px] w-full flex flex-col pt-12 mt-[30px]'>
         
     {/******************************  difficulty level *******************************/}
+    
+     
        <div className='difficulty-div w-100 h-20 mt-6  bg-slate-50 rounded-md flex flex-row text-center  justify-center'>
           <div className=' w-[25%]  flex items-center justify-center'>
               <DropdownMulti setOperation={setOperation} setMixOperation={setMixOperation} setSameDenoms={setSameDenoms}/>
@@ -364,7 +413,7 @@ const Arithmetic = () => {
        </div>
        
 
-
+       
    {/******************************  Drill section  *******************************/}
         <div className='card-drill'>
                 <h1 className='hd-drill text-green-600'>Try Out this Drill..</h1>
@@ -724,13 +773,15 @@ const Arithmetic = () => {
                                   <table>
                                     <tbody>
                                         <tr>
-                                            <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                            
+                                            <MathInput  type='inputNum' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
+                                            
                                         </tr>
                                         <tr className='flex items-center mt-4 mb-4'>
                                             <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                         </tr>
                                         <tr>
-                                          <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                        <MathInput type='inputDenom' setInputs={setInputs} inputs={inputs} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                         </tr>
                                     </tbody>
                                   </table>
@@ -756,14 +807,14 @@ const Arithmetic = () => {
               <label className=' text-[20px] font-thin text-gray-700 mx-2'>Random Sheets:</label>
                <input  className='input digit-input' onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
                <div className=' items-end h-4'>
-                 <label className='text-[12px] italic mx-2 text-orange-500'>Please provide even numbers ranging from 6 to 20.</label>
+                 <label className='text-[12px] italic mx-2 text-orange-500'>Please provide numbers ranging from 6 to 20.</label>
                </div>
 
             </div>
        
         </div>
         {totalSheets>2 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
         }
         
 
@@ -771,6 +822,8 @@ const Arithmetic = () => {
         
         <CheckModal showCheckModal={showCheckModal}  setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} result={result}/>
         <SolutionModal showSolutionModal={showSolutionModal} setShowSolutionModal={setShowSolutionModal} setShowCheckModal={setShowCheckModal} randomNums={randomNums} operation={operation} mixOperation={mixOperation} inputs={inputs} sameDenoms={sameDenoms}/>
+
+        <Toaster position="top-center" />
     </div>
   )
 }

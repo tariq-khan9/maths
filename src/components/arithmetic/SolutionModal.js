@@ -1,4 +1,5 @@
 import React from 'react'
+import TeX from '@matejmazur/react-katex';
 
 
 
@@ -18,15 +19,17 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                <div className='overflow-y-auto max-h-[380px]'>
                     <div>
                                 <h2 className='font-bold'>Your answer:</h2>
-                                <table className='solution-digit mb-4'>
-                                        
-                                        <td>
-                                        <tr className='px-2'>
-                                            
-                                            <SimplifyFraction numerator={inputs.numerator} denominator={inputs.denominator}/>
-                                        </tr>
-                                        </td>
-                                </table>
+                                <div className='solution-digit'>
+                                    {console.log(inputs)}
+                                      {(inputs.inputNum || inputs.inputDenom) &&
+                                                <div className='text-[20px] flex items-start mb-2'>
+                                                  <TeX>{`\= \\frac{${inputs.inputNum}}{${inputs.inputDenom}}`}</TeX>
+
+                                                 </div>
+                                                                                             
+                                                
+                                        }
+                                </div>
                             </div>
                 
                             <div className=''>
@@ -38,6 +41,9 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                 {/**========================  first row =========================================**/}
                                         <table className='solution-digit'>
                                                 <tr className=''>
+                                                <div className='text-[20px] flex items-start mb-2'>
+                                             
+                                                 </div>
                                                     <td className='= px-2'>
                                                     <tr>=</tr>
                                                     </td>
@@ -357,8 +363,6 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                                                     {randomNums.denominator1 * randomNums.denominator2} 
                                                                     </tr>
                                                                 </tbody>
-
-
                                                                 }
                                                         
                                                             </table>
@@ -381,7 +385,7 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                                                 :
                                                                 <tbody className=''>
                                                                     <tr className=''>
-                                                                        <SimplifyFraction numerator={(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} denominator={randomNums.denominator1 * randomNums.denominator2}/>
+                                                                    <SimplifyFraction numerator={(randomNums.numerator1 * randomNums.denominator2)   +   (randomNums.denominator1 * randomNums.numerator2)} denominator={randomNums.denominator1 * randomNums.denominator2}/>
                                                                     </tr>
                                                                 </tbody>
                                                                 }
@@ -1589,29 +1593,40 @@ export default SolutionModal
 
 const SimplifyFraction = ({numerator, denominator}) => {
     // Find the greatest common divisor (GCD) of numerator and denominator
-    const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
-    const divisor = gcd(numerator, denominator);
+    const findGCD = (a, b) => {
+    while (b !== 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+    return a;
+};
 
+const gcd = findGCD(Math.abs(numerator), Math.abs(denominator));
+    
     // Simplify the fraction by dividing both numerator and denominator by their GCD
-    let simplifiedNumerator = numerator / divisor;
-    let simplifiedDenominator = denominator / divisor;
+    let simplifiedNumerator = numerator / gcd;
+    let simplifiedDenominator = denominator / gcd;
 
     if(numerator===simplifiedNumerator && denominator===simplifiedDenominator) return null;
 
-    if (numerator < 0 && denominator < 0) {
+    if (simplifiedNumerator < 0 && simplifiedDenominator < 0) {
+        console.log("simplified numbers both neg", simplifiedNumerator, simplifiedDenominator)
         simplifiedNumerator = Math.abs(simplifiedNumerator);
         simplifiedDenominator = Math.abs(simplifiedDenominator);
     }
 
     if (simplifiedNumerator > 0 && simplifiedDenominator < 0) {
+        console.log("simplified numbers denom neg", simplifiedNumerator, simplifiedDenominator)
         simplifiedNumerator = -simplifiedNumerator;
         simplifiedDenominator = Math.abs(simplifiedDenominator);
     }
 
-    // if(simplifiedNumerator<0 && simplifiedDenominator>0){
-    //     simplifiedNumerator = -simplifiedNumerator;
-    //     simplifiedDenominator = Math.abs(simplifiedDenominator);
-    // }
+    if(simplifiedNumerator<0 && simplifiedDenominator>0){
+        console.log("simplified numbers num neg ", simplifiedNumerator, simplifiedDenominator)
+        //simplifiedNumerator = -simplifiedNumerator;
+        simplifiedDenominator = Math.abs(simplifiedDenominator);
+    }
 
     if(simplifiedNumerator===0 || simplifiedDenominator===0){
         return (
@@ -1650,3 +1665,43 @@ const SimplifyFraction = ({numerator, denominator}) => {
 
     // return { numerator: simplifiedNumerator, denominator: simplifiedDenominator };
 }
+
+
+//     // Find the greatest common divisor (GCD) of numerator and denominator
+//   // Find the greatest common divisor (GCD) of numerator and denominator
+//   const findGCD = (a, b) => {
+//     while (b !== 0) {
+//         let temp = b;
+//         b = a % b;
+//         a = temp;
+//     }
+//     return a;
+// };
+
+// const gcd = findGCD(Math.abs(numerator), Math.abs(denominator));
+
+//     // Find the greatest common divisor
+  
+
+//     // Simplify the fraction by dividing both numerator and denominator by their GCD
+//     const simplifiedNumerator = numerator / gcd;
+//     const simplifiedDenominator = denominator / gcd;
+
+//     // Return the simplified fraction
+//     return (
+//         <div className='flex flex-row'>
+//             <div className='flex items-center align-center mr-4 ml-1'>=</div>
+//             <div className='flex flex-col items-center justify-center'>
+//                 {simplifiedDenominator === 1 ? (
+//                     <div>{simplifiedNumerator}</div>
+//                 ) : (
+//                     <>
+//                         <div>{simplifiedNumerator}</div>
+//                         <div class="border-t my-1 border-2 border-gray-500 w-7 mx-auto"></div>
+//                         <div>{simplifiedDenominator}</div>
+//                     </>
+//                 )}
+//             </div>
+//         </div>
+//     );
+// };

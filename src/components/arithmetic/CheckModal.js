@@ -1,7 +1,7 @@
 import React from 'react'
 
 const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, result}) => {
-
+  console.log("result in check modal", result)
   const correctFlavors = ["Well done!", "Great job!", "Excellent!", "Fantastic!", "Perfect!"];
   const wrongFlavors = ["Oops!", "Try again!", "Not quite!", "Incorrect!", "Keep trying!"];
 
@@ -16,7 +16,6 @@ const CheckModal = ({showCheckModal, setShowCheckModal, setShowSolutionModal, re
           <div className='bg-white rounded-md z-50 w-96  p-4  mb-[200px] '> 
                  <div className='flex flex-row justify-between '>
                      <h3 className='text-[25px]'>Validation</h3>
-                     <p class='text-xl text-gray-200 mt-1  '>&#x2717;</p>
                  </div>
                  <div className='w-full flex justify-center mb-6'>
                   {result? <h2 className='text-[50px] text-green-800  mt-2'>{randomCorrectFlavor}</h2> :

@@ -1,13 +1,15 @@
 import React,{useState, useEffect, useRef} from 'react'
 import CheckModal from './CheckModal'
 import SolutionModal from './SolutionModal';
+import MathArrayInput from './MathArrayInput'
+import {  toast } from 'sonner'
 
-const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
-  // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
+
+const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
+
  
   
-  let sheets = totalSheets/2;
-  
+  let sheets = totalSheets;
  
   
  const [randomSheetArray, setRandomSheetArray] = useState([])
@@ -18,59 +20,44 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
  const [arrayResult, setArrayResult] = useState(false)
  const [submitResult, setSubmitResult] =  useState(0)
  const [objectSubmitCount, setObjectSubmitCount] = useState(0)
+ const mixOperation= 1;
+
  
-const [inputs, setInputs] = useState({
+ const [inputs, setInputs] = useState(randomSheetArray.map(() => ({
   numerator: 1,
   denominator: 1
-})
+})));
 
-const isFirstRun = useRef(true);
+
 
   useEffect(() => {
      
-    // if (isFirstRun.current) {
-    //   // This block will run only on the first render
-    //   handleRandomSheets(sheets)
-    
-    //   isFirstRun.current = false;
-    //   return;
-    // }
+   
     handleRandomSheets(sheets)
-    
+    setSubmitted(false)
+    setObjectSubmitCount(0)
+    setSubmitResult(0)
    
   
-  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult, submitted]);
+   
+  
+  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult,difficulty, operation]);
  
  
 
-  // const handleRandomSheets = () => {
-  //   if (randomSheetArray.length > 0) {
-  //     // Clear randomSheet by setting it to an empty array
-  //     setRandomSheetArray([]);
-  //   }
-    
-  //   for (let i = 0; i < 5; i++) {
-  //     const numerator1 = getRandomNumber(2, 10);
-  //     const denominator1 = getRandomNumber(2, 10);
-  //     const numerator2 = getRandomNumber(2, 10);
-  //     const denominator2 = getRandomNumber(2, 10);
-  
-  //     randomSheetArray.push({
-  //       numerator1,
-  //       denominator1,
-  //       numerator2,
-  //       denominator2
-  //     });
-  //   }
-  
-  //   setRandomSheetArray(randomSheetArray);
-  // }
 
-  const handleArrayCheck = (randomNums) => {
+
+  const handleArrayCheck = (randomNums, i) => {
+     console.log("mix operation in handlearraycheck for index  ", i+1, "is", randomNums.randomNums.mixOperation, "while operation is ", operation)
+    // if(operation!==4){
+    //   if(!randomNums.randomNums.inputNum || !randomNums.randomNums.inputDenom){
+    //     toast.error('Please enter numerator and denominator for inputs.')
+    //     return;
+    //   }
+    // }
     setObjectSubmitCount(objectSubmitCount+1)
     const { numerator1, denominator1, numerator2, denominator2, showSolutionBtn } = randomNums.randomNums;
-    console.log(numerator1, numerator2, showSolutionBtn);
-    if (operation === 1) {
+    if (operation === 1 || randomNums.randomNums.mixOperation===1) {
         if (sameDenoms) {
             const checkDeno = denominator1;
             const checkNum = numerator1 + numerator2;
@@ -90,7 +77,7 @@ const isFirstRun = useRef(true);
         }
     }
 
-    if (operation === 2) {
+    if (operation === 2 || randomNums.randomNums.mixOperation===2) {
         if (sameDenoms) {
             const checkDeno = denominator1;
             const checkNum = numerator1 - numerator2;
@@ -111,22 +98,49 @@ const isFirstRun = useRef(true);
 
     }
 
-    if (operation === 3) {
+    if (operation === 3 || randomNums.randomNums.mixOperation===3) {
         const checkNum = numerator1 * numerator2;
         const checkDeno = denominator1 * denominator2;
 
         var checkResult = checkNum / checkDeno;
     }
 
-    if (operation === 4) {
+    if (operation === 4 || randomNums.randomNums.mixOperation===4) {
         if (difficulty === 1) {
             var deno2 = parseInt(divisionInputs.denominator2)
             var num2 = parseInt(divisionInputs.numerator2)
-            if (numerator2 === deno2 && denominator2 === num2 && divisionInputs.sign === '*') {
-              setArrayResult(true)
-            } else {
-                setArrayResult(false)
+            console.log("divisionINputs", divisionInputs)
+            if(!divisionInputs.denominator2 || !divisionInputs.numerator2 || !divisionInputs.sign){
+              console.log("provide inputs")
+              return
             }
+            if (numerator2 === deno2 && denominator2 === num2 && divisionInputs.sign === '*') {
+                const updatedArray = randomSheetArray.map((item, index) => {
+                  // Check if the index matches the index of the item to update
+                  if (index === i) {
+                   
+                      // Return a new object with updated properties
+                      return { ...item, isSubmitted: true, objectResult: true, showSolutionModal: false };
+                  }
+                  // Return the original object if it's not the one to update
+                  return item;
+                });
+                // Update the state with the updated array
+                setRandomSheetArray(updatedArray);
+                setSubmitResult(submitResult + 1);
+
+          } else {
+            const updatedArray = randomSheetArray.map((item, index) => {
+              if (index === i) {
+                  // If the properties match, return a new object with the updated 
+                  return { ...item, isSubmitted: true, objectResult: false, showSolutionModal: false };
+              }
+              // If the properties don't match, return the original object
+              return item;
+          });
+          setRandomSheetArray(updatedArray);
+              
+          }
         }
 
         if (difficulty > 1) {
@@ -146,34 +160,44 @@ const isFirstRun = useRef(true);
                     numerator2 === num2 &&
                     denominator2 === deno2 &&
                     divisionInputs.sign === '*')) {
-                setArrayResult(true)
-                setSubmitResult(submitResult+1)
+                      const updatedArray = randomSheetArray.map((item, index) => {
+                        // Check if the index matches the index of the item to update
+                        if (index === i) {
+                            // Return a new object with updated properties
+                            return { ...item, isSubmitted: true, objectResult: true, showSolutionModal: false };
+                        }
+                        // Return the original object if it's not the one to update
+                        return item;
+                      });
+                      // Update the state with the updated array
+                      setRandomSheetArray(updatedArray);
+                      setSubmitResult(submitResult + 1);
             }
-
-
-
             else {
-                setArrayResult(false)
+              const updatedArray = randomSheetArray.map((item, index) => {
+                if (index === i) {
+                    // If the properties match, return a new object with the updated 
+                    return { ...item, isSubmitted: true, objectResult: false, showSolutionModal: false };
+                }
+                // If the properties don't match, return the original object
+                return item;
+            });
+            setRandomSheetArray(updatedArray);
             }
         }
 
     }
 
-    if (operation !== 4) {
-        var inputResult = inputs.numerator / inputs.denominator;
+    if (operation !== 4 || randomNums.randomNums.mixOperation!==4) {
+        var inputResult = randomNums.randomNums.inputNum / randomNums.randomNums.inputDenom;
 
-        
+        console.log(inputResult)
          var newCheckResult = parseFloat(checkResult).toFixed(2);
          var newInputResult = parseFloat(inputResult).toFixed(2)
-         console.log("check deno", newCheckResult, "check num ", newInputResult)
         if (newCheckResult === newInputResult) {
-          //  const updatedSheet = { ...randomNums.randomNums, isSubmitted: true, objectResult: true};
-            const updatedArray = randomSheetArray.map(item => {
+            const updatedArray = randomSheetArray.map((item, index) => {
               // Compare properties of the objects to determine if they are equal
-              if (item.numerator1 === randomNums.randomNums.numerator1 &&
-                  item.denominator1 === randomNums.randomNums.denominator1 &&
-                  item.numerator2 === randomNums.randomNums.numerator2 &&
-                  item.denominator2 === randomNums.randomNums.denominator2) {
+              if (index===i) {
                   // If the properties match, return a new object with the updated 
                   return { ...item, isSubmitted:true, objectResult: true, showSolutionModal: false };
               }
@@ -185,12 +209,9 @@ const isFirstRun = useRef(true);
             
            
         } else {
-          const updatedArray = randomSheetArray.map(item => {
+          const updatedArray = randomSheetArray.map((item, index)=> {
             // Compare properties of the objects to determine if they are equal
-            if (item.numerator1 === randomNums.randomNums.numerator1 &&
-                item.denominator1 === randomNums.randomNums.denominator1 &&
-                item.numerator2 === randomNums.randomNums.numerator2 &&
-                item.denominator2 === randomNums.randomNums.denominator2) {
+            if (index===i) {
                 // If the properties match, return a new object with the updated 
                 return { ...item, isSubmitted: true, objectResult: false, showSolutionModal: false };
             }
@@ -200,8 +221,6 @@ const isFirstRun = useRef(true);
         setRandomSheetArray(updatedArray);
             
         }
-
-      
     }
  
 }
@@ -226,20 +245,31 @@ const handleCloseSolutionModal = (index) => {
 
    
  const handleRandomSheets = (sheets) => {
-  // if (randomSheetArray.length > 0) {
-  //   // Clear randomSheet by setting it to an empty array
-  //   setRandomSheetArray([]);
-  // }
 
+   const updatedArray= [];
 
+   const getRandomOperation = () => {
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * 4) + 1;
+    } while (randomNum === 3); 
+    return randomNum;
+  };
   
-  console.log(inputRange.min, inputRange.max)
+  let mixOperation;
+ 
   
   for (let i = 0; i < sheets; i++) {
-    const numerator1 = getRandomNumber(2, 10);
-    const denominator1 = getRandomNumber(2, 10);
-    const numerator2 = getRandomNumber(2, 10);
-    const denominator2 = getRandomNumber(2, 10);
+    if(operation===0){
+      
+       mixOperation = getRandomOperation();
+      console.log("mix operation in array", mixOperation)
+    }
+    
+    const numerator1 = getRandomNumber(inputRange.min, inputRange.max);
+    const denominator1 = getRandomNumber(inputRange.min, inputRange.max);
+    const numerator2 = getRandomNumber(inputRange.min, inputRange.max);
+    const denominator2 = getRandomNumber(inputRange.min, inputRange.max);
 
       // var numerator1 = getRandomNumber(inputRange.min, inputRange.max);
       // var denominator1 = getRandomNumber(inputRange.min, inputRange.max);
@@ -287,39 +317,49 @@ const handleCloseSolutionModal = (index) => {
   //     }
   // } while (true);
   
-    randomSheetArray.push({
+    updatedArray.push({
       numerator1,
       denominator1,
       numerator2,
       denominator2,
+      mixOperation,
+      inputNum:'',
+      inputDenom:'',
       isSubmitted: false,
       objectResult: false
+
     });
 
   }
-  console.log("this array ", randomSheetArray)
-  setRandomSheetArray(randomSheetArray)
+
+  setRandomSheetArray(updatedArray)
 } 
 
+// const handleArrayInputChange = (index, field, value) => {
+//   const newData = [...randomSheetArray];
+//   newData[index][field] = parseInt(value);
+//   setRandomSheetArray(newData);
+// };
 
-const handleSubmit = (randomNum) => {
-  const checkDeno = randomNum.denominator1 * randomNum.denominator2;
 
-  const checkNum = (randomNum.numerator1*randomNum.denominator2) + (randomNum.numerator2*randomNum.denominator1);
+// const handleSubmit = (randomNum) => {
+//   const checkDeno = randomNum.denominator1 * randomNum.denominator2;
 
-  const checkResult = checkNum/checkDeno
+//   const checkNum = (randomNum.numerator1*randomNum.denominator2) + (randomNum.numerator2*randomNum.denominator1);
 
-  const inputResult = inputs.numerator/inputs.denominator;
+//   const checkResult = checkNum/checkDeno
 
-  if(checkResult===inputResult){
-    setArrayResult(true)
-  }
-  else{
-    setArrayResult(false)
-  }
+//   const inputResult = randomNum.inputNum/randomNum.inputDenom;
 
-  setShowCheckModal(true)
-}
+//   if(checkResult===inputResult){
+//     setArrayResult(true)
+//   }
+//   else{
+//     setArrayResult(false)
+//   }
+
+//   setShowCheckModal(true)
+// }
 
  if(showRandomSheets)
 
@@ -329,9 +369,8 @@ const handleSubmit = (randomNum) => {
              
                       {randomSheetArray.map((randomNums, index)=> (
                         <div className='px-[40px]  pt-6 pb-4  mt-6 mx-4 bg-white rounded-md'>
-                          
                           <div className='bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center'><h2 className='text-gray-500 italic text-[18px]' >{index+1}</h2></div>
-                              {(operation===4 || mixOperation===4)?
+                              {(operation===4 || randomNums.mixOperation===4)?
                                     <div className='flex items-center justify-center '>
                                       {difficulty===1 &&
                                             <table className='digit '>
@@ -367,10 +406,10 @@ const handleSubmit = (randomNum) => {
                                                         </tr>
                                                           :
                                                           <tr>
-                                                            { mixOperation===1 && <h2>+</h2>}
-                                                            { mixOperation===2 && <h2>-</h2>}
-                                                            { mixOperation===3 && <h2>&times;</h2>}
-                                                            { mixOperation===4 && <h2>&divide;</h2>}
+                                                            { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                            { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                            { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                            { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                         </tr>
                 
                                                         }
@@ -478,10 +517,10 @@ const handleSubmit = (randomNum) => {
                                                         </tr>
                                                           :
                                                           <tr>
-                                                            { mixOperation===1 && <h2>+</h2>}
-                                                            { mixOperation===2 && <h2>-</h2>}
-                                                            { mixOperation===3 && <h2>&times;</h2>}
-                                                            { mixOperation===4 && <h2>&divide;</h2>}
+                                                            { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                            { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                            { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                            { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                         </tr>
                 
                                                         }
@@ -542,7 +581,7 @@ const handleSubmit = (randomNum) => {
                                                   <table>
                                                     <tbody>
                                                         <tr className=''>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, numerator2: e.target.value})} id='divisionNum2' className='input digit-input'/>
+                                                          <input required onChange={(e)=>setDivisionInputs({...divisionInputs, numerator2: e.target.value})} id='divisionNum2' className='input digit-input'/>
                                                         </tr>
                                                         <tr className='flex items-center mt-4 mb-4'>
                                                             <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
@@ -602,7 +641,7 @@ const handleSubmit = (randomNum) => {
                                                                 <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
                                                             </tr>
                                                             <tr>
-                                                            <input onChange={(e)=>setAdditionInputs({...additionInputs, denominator1: e.target.value})} id='num' className='input digit-input'/>
+                                                            <input required onChange={(e)=>setAdditionInputs({...additionInputs, denominator1: e.target.value})} id='num' className='input digit-input'/>
                                                             </tr>
                                                         </tbody>
                                                       </table>
@@ -622,10 +661,10 @@ const handleSubmit = (randomNum) => {
                                                   </tr>
                                                   :
                                                   <tr>
-                                                      { mixOperation===1 && <h2>+</h2>}
-                                                      { mixOperation===2 && <h2>-</h2>}
-                                                      { mixOperation===3 && <h2>&times;</h2>}
-                                                      { mixOperation===4 && <h2>&divide;</h2>}
+                                                      { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                      { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                      { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                      { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                   </tr>
 
                                                   }
@@ -685,16 +724,17 @@ const handleSubmit = (randomNum) => {
                                         <td className='inputs px-4'>
                                             <table>
                                               <tbody>
+                                             
                                                   <tr>
-                                                      <input onChange={(e)=>setInputs({...inputs, numerator: e.target.value})} id='num' className='input digit-input'/>
+                                                  <MathArrayInput  type='inputNum' index={index}  randomSheetArray={randomSheetArray} setRandomSheetArray={setRandomSheetArray} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                                   </tr>
                                                   <tr className='flex items-center mt-4 mb-4'>
                                                       <div class="border-t border-2  border-gray-500   w-20 mx-auto"></div>
                                                   </tr>
                                                   <tr>
-                                                    <input id='deno' onChange={(e)=>setInputs({...inputs, denominator: e.target.value})}  className='input digit-input'/>
+                                                  <MathArrayInput  type='inputDenom' index={index}  randomSheetArray={randomSheetArray} setRandomSheetArray={setRandomSheetArray} difficulty={difficulty} operation={operation} sameDenoms={sameDenoms}/>
                                                   </tr>
-                                              </tbody>
+                                               </tbody>
                                             </table>
                                         </td>
                                       </tr>
@@ -706,29 +746,32 @@ const handleSubmit = (randomNum) => {
                        
                           {randomNums.isSubmitted?
                              <div className='w-full'>
-                             {submitted ? (
-                                <div>
-                                  { randomNums.objectResult ? (
-                                    <div className='w-full flex justify-center'>
-                                    <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Excellent!</button>
+                                {submitted ? (
+                                    <div>
+                                    
+                                      { randomNums.objectResult ? (
+                                        <div className='w-full flex justify-center'>
+                                          
+                                        <button className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-green-800 hover:bg-green-600'>Excellent!</button>
+                                        </div>
+                                      ) : (
+                                        <div className='w-full flex justify-center'>
+                                            {console.log("after submited random objectresult ", randomNums.objectResult)}
+                                        <button  onClick={() => handleShowSolutionModal(index, true)} className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
+                                        </div>
+                                      )}
                                     </div>
                                   ) : (
                                     <div className='w-full flex justify-center'>
-                                    <button  onClick={() => handleShowSolutionModal(index, true)} className='w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 text-white bg-orange-600 hover:bg-orange-500'>Oops.. Solution?</button>
+                                    <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-yellow-300 italic'>Submitted</button>
                                     </div>
                                   )}
-                                </div>
-                              ) : (
-                                <div className='w-full flex justify-center'>
-                                <button  disabled={true} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 bg-green-500 hover:text-white hover:bg-green-800'>submitted</button>
-                                </div>
-                              )}
 
                             </div>
                            :
                            <div className='w-full flex justify-center '>
                        
-                               <button onClick={()=>handleArrayCheck({randomNums})} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>submit</button>
+                               <button onClick={()=>handleArrayCheck({randomNums}, index)} className=' w-[50%] rounded-[5px] py-1 border border-1 border-gray-400 hover:text-white hover:bg-green-800'>Submit</button>
                           </div>
                         }
                           </div>
@@ -740,7 +783,7 @@ const handleSubmit = (randomNum) => {
                               randomNums={randomNums}
                               operation={operation}
                               mixOperation={mixOperation}
-                              inputs={inputs}
+                              inputs={randomNums}
                               sameDenoms={sameDenoms}
                             />
                           )}
@@ -750,10 +793,9 @@ const handleSubmit = (randomNum) => {
 
                       <div className=' w-full text-center  items-center  my-4 '>
                          <button onClick={()=>{
-                          console.log("object coutn" , objectSubmitCount)
                           setSubmitted(true)
                           setShowSubmitResultModal(true)
-                          }} disabled={objectSubmitCount<4}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
+                          }} disabled={objectSubmitCount<totalSheets}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
                       </div>
               </div>
               
@@ -768,11 +810,15 @@ export default RandomSheets
 
 
 const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, submitResult, sheets}) => {
-
+  
+  useEffect(()=>{
+    console.log("final result", submitResult)
+  },[])
+  
   const percentage = ((submitResult/sheets) * 100).toFixed(0);
-  const handleFinalSubmit = () => {
+  const handleClose = () => {
     setShowSubmitResultModal(false)
-    console.log(submitResult, "and the sheets are ", sheets)
+    
   }
   if(showSubmitResultModal)
   {
@@ -793,10 +839,10 @@ const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, sub
              </div>
            
                 {/* ====================================== close button ======================================== */}
-                <div onClick={()=>handleFinalSubmit()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
+                <div onClick={()=>handleClose()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
                       <button className='flex justify-items-end p-1 pb-2 px-8 text-white rounded-md bg-orange-500' >Close</button>
               </div>
- 
+             
        </div>
     </div>
    )
