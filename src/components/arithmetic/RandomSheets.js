@@ -5,8 +5,8 @@ import MathArrayInput from './MathArrayInput'
 import {  toast } from 'sonner'
 
 
-const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, mixOperation,difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
-  // console.log("operation", operation, "mix operatio", mixOperation, "difficu", difficulty, "min", inputRange)
+const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
+
  
   
   let sheets = totalSheets;
@@ -20,6 +20,8 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
  const [arrayResult, setArrayResult] = useState(false)
  const [submitResult, setSubmitResult] =  useState(0)
  const [objectSubmitCount, setObjectSubmitCount] = useState(0)
+ const mixOperation= 1;
+
  
  const [inputs, setInputs] = useState(randomSheetArray.map(() => ({
   numerator: 1,
@@ -32,27 +34,30 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
      
    
     handleRandomSheets(sheets)
+    setSubmitted(false)
+    setObjectSubmitCount(0)
+    setSubmitResult(0)
    
   
    
   
-  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult]);
+  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult,difficulty, operation]);
  
  
 
 
 
   const handleArrayCheck = (randomNums, i) => {
-
-    if(operation!==4){
-      if(!randomNums.randomNums.inputNum || !randomNums.randomNums.inputDenom){
-        toast.error('Please enter numerator and denominator for inputs.')
-        return;
-      }
-    }
+     console.log("mix operation in handlearraycheck for index  ", i+1, "is", randomNums.randomNums.mixOperation, "while operation is ", operation)
+    // if(operation!==4){
+    //   if(!randomNums.randomNums.inputNum || !randomNums.randomNums.inputDenom){
+    //     toast.error('Please enter numerator and denominator for inputs.')
+    //     return;
+    //   }
+    // }
     setObjectSubmitCount(objectSubmitCount+1)
     const { numerator1, denominator1, numerator2, denominator2, showSolutionBtn } = randomNums.randomNums;
-    if (operation === 1) {
+    if (operation === 1 || randomNums.randomNums.mixOperation===1) {
         if (sameDenoms) {
             const checkDeno = denominator1;
             const checkNum = numerator1 + numerator2;
@@ -72,7 +77,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
         }
     }
 
-    if (operation === 2) {
+    if (operation === 2 || randomNums.randomNums.mixOperation===2) {
         if (sameDenoms) {
             const checkDeno = denominator1;
             const checkNum = numerator1 - numerator2;
@@ -93,14 +98,14 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
 
     }
 
-    if (operation === 3) {
+    if (operation === 3 || randomNums.randomNums.mixOperation===3) {
         const checkNum = numerator1 * numerator2;
         const checkDeno = denominator1 * denominator2;
 
         var checkResult = checkNum / checkDeno;
     }
 
-    if (operation === 4) {
+    if (operation === 4 || randomNums.randomNums.mixOperation===4) {
         if (difficulty === 1) {
             var deno2 = parseInt(divisionInputs.denominator2)
             var num2 = parseInt(divisionInputs.numerator2)
@@ -183,7 +188,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
 
     }
 
-    if (operation !== 4) {
+    if (operation !== 4 || randomNums.randomNums.mixOperation!==4) {
         var inputResult = randomNums.randomNums.inputNum / randomNums.randomNums.inputDenom;
 
         console.log(inputResult)
@@ -243,15 +248,24 @@ const handleCloseSolutionModal = (index) => {
 
    const updatedArray= [];
 
-  const getRandomOperation = () => Math.floor(Math.random() * 4) + 1;
+   const getRandomOperation = () => {
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * 4) + 1;
+    } while (randomNum === 3); 
+    return randomNum;
+  };
   
+  let mixOperation;
  
   
   for (let i = 0; i < sheets; i++) {
     if(operation===0){
-      var arrayOperation = getRandomOperation()
+      
+       mixOperation = getRandomOperation();
+      console.log("mix operation in array", mixOperation)
     }
- 
+    
     const numerator1 = getRandomNumber(inputRange.min, inputRange.max);
     const denominator1 = getRandomNumber(inputRange.min, inputRange.max);
     const numerator2 = getRandomNumber(inputRange.min, inputRange.max);
@@ -308,7 +322,7 @@ const handleCloseSolutionModal = (index) => {
       denominator1,
       numerator2,
       denominator2,
-      arrayOperation,
+      mixOperation,
       inputNum:'',
       inputDenom:'',
       isSubmitted: false,
@@ -355,9 +369,8 @@ const handleCloseSolutionModal = (index) => {
              
                       {randomSheetArray.map((randomNums, index)=> (
                         <div className='px-[40px]  pt-6 pb-4  mt-6 mx-4 bg-white rounded-md'>
-                          
                           <div className='bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center'><h2 className='text-gray-500 italic text-[18px]' >{index+1}</h2></div>
-                              {(operation===4 || mixOperation===4)?
+                              {(operation===4 || randomNums.mixOperation===4)?
                                     <div className='flex items-center justify-center '>
                                       {difficulty===1 &&
                                             <table className='digit '>
@@ -393,10 +406,10 @@ const handleCloseSolutionModal = (index) => {
                                                         </tr>
                                                           :
                                                           <tr>
-                                                            { mixOperation===1 && <h2>+</h2>}
-                                                            { mixOperation===2 && <h2>-</h2>}
-                                                            { mixOperation===3 && <h2>&times;</h2>}
-                                                            { mixOperation===4 && <h2>&divide;</h2>}
+                                                            { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                            { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                            { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                            { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                         </tr>
                 
                                                         }
@@ -504,10 +517,10 @@ const handleCloseSolutionModal = (index) => {
                                                         </tr>
                                                           :
                                                           <tr>
-                                                            { mixOperation===1 && <h2>+</h2>}
-                                                            { mixOperation===2 && <h2>-</h2>}
-                                                            { mixOperation===3 && <h2>&times;</h2>}
-                                                            { mixOperation===4 && <h2>&divide;</h2>}
+                                                            { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                            { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                            { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                            { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                         </tr>
                 
                                                         }
@@ -648,10 +661,10 @@ const handleCloseSolutionModal = (index) => {
                                                   </tr>
                                                   :
                                                   <tr>
-                                                      { mixOperation===1 && <h2>+</h2>}
-                                                      { mixOperation===2 && <h2>-</h2>}
-                                                      { mixOperation===3 && <h2>&times;</h2>}
-                                                      { mixOperation===4 && <h2>&divide;</h2>}
+                                                      { randomNums.mixOperation===1 && <h2>+</h2>}
+                                                      { randomNums.mixOperation===2 && <h2>-</h2>}
+                                                      { randomNums.mixOperation===3 && <h2>&times;</h2>}
+                                                      { randomNums.mixOperation===4 && <h2>&divide;</h2>}
                                                   </tr>
 
                                                   }
@@ -797,11 +810,15 @@ export default RandomSheets
 
 
 const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, submitResult, sheets}) => {
-
+  
+  useEffect(()=>{
+    console.log("final result", submitResult)
+  },[])
+  
   const percentage = ((submitResult/sheets) * 100).toFixed(0);
-  const handleFinalSubmit = () => {
+  const handleClose = () => {
     setShowSubmitResultModal(false)
-    console.log(submitResult, "and the sheets are ", sheets)
+    
   }
   if(showSubmitResultModal)
   {
@@ -822,7 +839,7 @@ const SubmitResultModal = ({showSubmitResultModal, setShowSubmitResultModal, sub
              </div>
            
                 {/* ====================================== close button ======================================== */}
-                <div onClick={()=>handleFinalSubmit()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
+                <div onClick={()=>handleClose()} className='flex flex-row w-full  justify-end mt-4 pr-4'>
                       <button className='flex justify-items-end p-1 pb-2 px-8 text-white rounded-md bg-orange-500' >Close</button>
               </div>
              

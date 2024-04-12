@@ -106,6 +106,14 @@ const Arithmetic = () => {
     return randomNumber;
   }
 
+  const getRandomOperation = () => {
+    let randomNum;
+    do {
+      randomNum = Math.floor(Math.random() * 4) + 1;
+    } while (randomNum === 3); 
+    return randomNum;
+  };
+
  
 
   const handleNext = () => {
@@ -113,7 +121,7 @@ const Arithmetic = () => {
 
     if(mixOperation>0){
        setOperation(0)
-       const operator = getRandomNumber(1, 4)
+       const operator = getRandomOperation()
        setMixOperation(operator)
     }
 
@@ -227,21 +235,17 @@ const Arithmetic = () => {
 
   const handleSetTotalSheets = (value) => {
     const intValue = parseInt(value);
-  if (!isNaN(intValue) && intValue >= 3 && intValue <= 20 ) {
+  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 ) {
     setTotalSheets(intValue);
     setShowRandomSheets(true)
   } else {
     setTotalSheets(0)
-    console.log("Invalid input. Please enter an even number between 6 and 20.");
+
   }
     
   };
 
   const handleCheck = () => {
-    if(!inputs.inputNum || !inputs.inputDenom){
-      toast.error('Please enter numerator and denominator for inputs.')
-      return;
-    }
     let checkResult;
     let inputResult = inputs.inputNum/inputs.inputDenom;
 
@@ -275,6 +279,7 @@ const Arithmetic = () => {
         const checkDeno = randomNums.denominator1;
         const checkNum = randomNums.numerator1  - randomNums.numerator2;
          checkResult = checkNum / checkDeno;
+        
       }
       else{
             const checkDeno = randomNums.denominator1 * randomNums.denominator2
@@ -292,7 +297,7 @@ const Arithmetic = () => {
           }
             
       }
-      inputResult = inputs.numerator/inputs.denominator;
+      inputResult = inputs.inputNum/inputs.inputDenom;
     }
 
     if(operation===3 || mixOperation===3){
@@ -357,14 +362,15 @@ const Arithmetic = () => {
     }
 
    
-  
-    if(checkResult===inputResult){
+    
+    if(checkResult==inputResult){
       setResult(true)
+      console.log("result is true", result)
     }
     else{
       setResult(false)
     }
-  
+    console.log("result right before check", result)
     setShowCheckModal(true)
   }
 
@@ -801,14 +807,14 @@ const Arithmetic = () => {
               <label className=' text-[20px] font-thin text-gray-700 mx-2'>Random Sheets:</label>
                <input  className='input digit-input' onChange={(e)=>handleSetTotalSheets(e.target.value)}/>
                <div className=' items-end h-4'>
-                 <label className='text-[12px] italic mx-2 text-orange-500'>Please provide even numbers ranging from 6 to 20.</label>
+                 <label className='text-[12px] italic mx-2 text-orange-500'>Please provide numbers ranging from 6 to 20.</label>
                </div>
 
             </div>
        
         </div>
         {totalSheets>2 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} mixOperation={mixOperation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
         }
         
 

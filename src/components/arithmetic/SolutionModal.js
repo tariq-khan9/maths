@@ -21,7 +21,7 @@ const SolutionModal = ({showSolutionModal,setShowSolutionModal,setShowCheckModal
                                 <h2 className='font-bold'>Your answer:</h2>
                                 <div className='solution-digit'>
                                     {console.log(inputs)}
-                                      {(inputs.inputNum!==0 || inputs.inputDenom!==0) &&
+                                      {(inputs.inputNum || inputs.inputDenom) &&
                                                 <div className='text-[20px] flex items-start mb-2'>
                                                   <TeX>{`\= \\frac{${inputs.inputNum}}{${inputs.inputDenom}}`}</TeX>
 
@@ -1610,18 +1610,21 @@ const gcd = findGCD(Math.abs(numerator), Math.abs(denominator));
 
     if(numerator===simplifiedNumerator && denominator===simplifiedDenominator) return null;
 
-    if (numerator < 0 && denominator < 0) {
+    if (simplifiedNumerator < 0 && simplifiedDenominator < 0) {
+        console.log("simplified numbers both neg", simplifiedNumerator, simplifiedDenominator)
         simplifiedNumerator = Math.abs(simplifiedNumerator);
         simplifiedDenominator = Math.abs(simplifiedDenominator);
     }
 
     if (simplifiedNumerator > 0 && simplifiedDenominator < 0) {
+        console.log("simplified numbers denom neg", simplifiedNumerator, simplifiedDenominator)
         simplifiedNumerator = -simplifiedNumerator;
         simplifiedDenominator = Math.abs(simplifiedDenominator);
     }
 
     if(simplifiedNumerator<0 && simplifiedDenominator>0){
-        simplifiedNumerator = -simplifiedNumerator;
+        console.log("simplified numbers num neg ", simplifiedNumerator, simplifiedDenominator)
+        //simplifiedNumerator = -simplifiedNumerator;
         simplifiedDenominator = Math.abs(simplifiedDenominator);
     }
 
