@@ -5,7 +5,7 @@ import MathArrayInput from './MathArrayInput'
 import {  toast } from 'sonner'
 
 
-const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms, divisionInputs, setDivisionInputs}) => {
+const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowRandom, operation, difficulty, inputRange, additionInputs, setAdditionInputs, sameDenoms}) => {
 
  
   
@@ -13,6 +13,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
  
   
  const [randomSheetArray, setRandomSheetArray] = useState([])
+ const [divisionInputs, setDivisionInputs] = useState([])
  const [showCheckModal, setShowCheckModal] = useState(false)
  const [showSolutionModal, setShowSolutionModal] = useState(false)
  const [showSubmitResultModal, setShowSubmitResultModal] = useState(false)
@@ -41,20 +42,14 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
   
    
   
-  }, [totalSheets, showRandomSheets,showSolutionModal, arrayResult,difficulty, operation]);
+  }, [totalSheets, showRandomSheets,showSolutionModal,difficulty, operation]);
  
  
 
 
 
   const handleArrayCheck = (randomNums, i) => {
-     console.log("mix operation in handlearraycheck for index  ", i+1, "is", randomNums.randomNums.mixOperation, "while operation is ", operation)
-    // if(operation!==4){
-    //   if(!randomNums.randomNums.inputNum || !randomNums.randomNums.inputDenom){
-    //     toast.error('Please enter numerator and denominator for inputs.')
-    //     return;
-    //   }
-    // }
+    console.log("both index are ", i, divisionInputs[i].ind)
     setObjectSubmitCount(objectSubmitCount+1)
     const { numerator1, denominator1, numerator2, denominator2, showSolutionBtn } = randomNums.randomNums;
     if (operation === 1 || randomNums.randomNums.mixOperation===1) {
@@ -106,19 +101,24 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
     }
 
     if (operation === 4 || randomNums.randomNums.mixOperation===4) {
+      console.log("whole object ", divisionInputs[i])
+         
+       const {divisionNum1, divisionDenom1, divisionNum2, divisionDenom2, sign} = divisionInputs[i]
+      //  if(!divisionNum1 || !divisionNum2|| !divisionDenom1 || !divisionDenom2 || !sign ){
+      //   console.log("please fill all fields")
+      //   return
+      //  }
+
         if (difficulty === 1) {
-            var deno2 = parseInt(divisionInputs.denominator2)
-            var num2 = parseInt(divisionInputs.numerator2)
-            console.log("divisionINputs", divisionInputs)
-            if(!divisionInputs.denominator2 || !divisionInputs.numerator2 || !divisionInputs.sign){
-              console.log("provide inputs")
-              return
-            }
-            if (numerator2 === deno2 && denominator2 === num2 && divisionInputs.sign === '*') {
+            var deno2 = divisionDenom2
+            var num2 = divisionNum2
+            console.log(numerator2,deno2,denominator2,num2, divisionInputs[i].sign)
+            if (numerator2 === deno2 && denominator2 === num2 && divisionInputs[i].sign === '*') {
                 const updatedArray = randomSheetArray.map((item, index) => {
                   // Check if the index matches the index of the item to update
+                  
                   if (index === i) {
-                   
+                      
                       // Return a new object with updated properties
                       return { ...item, isSubmitted: true, objectResult: true, showSolutionModal: false };
                   }
@@ -126,40 +126,46 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
                   return item;
                 });
                 // Update the state with the updated array
+                
                 setRandomSheetArray(updatedArray);
                 setSubmitResult(submitResult + 1);
+                console.log("updated array in true", randomSheetArray)
 
           } else {
             const updatedArray = randomSheetArray.map((item, index) => {
               if (index === i) {
+             
                   // If the properties match, return a new object with the updated 
                   return { ...item, isSubmitted: true, objectResult: false, showSolutionModal: false };
               }
               // If the properties don't match, return the original object
               return item;
           });
+          
           setRandomSheetArray(updatedArray);
+          console.log("updated array in false", randomSheetArray)
               
+
           }
         }
 
         if (difficulty > 1) {
-
-            var deno2 = parseInt(divisionInputs.denominator2)
-            var num2 = parseInt(divisionInputs.numerator2)
-            var deno1 = parseInt(divisionInputs.denominator1)
-            var num1 = parseInt(divisionInputs.numerator1)
+            var deno2 = divisionDenom2
+            var num2 = divisionNum2
+            var deno1 = divisionDenom1
+            var num1 = divisionNum1
 
             if ((numerator2 === deno2 &&
                     denominator2 === num2 &&
                     numerator1 === num1 &&
                     denominator1 === deno1 &&
-                    divisionInputs.sign === '*') ||
+                    divisionInputs[i].sign === '*') ||
                 (numerator1 === deno1 &&
                     denominator1 === num1 &&
                     numerator2 === num2 &&
                     denominator2 === deno2 &&
-                    divisionInputs.sign === '*')) {
+                    divisionInputs[i].sign === '*')) {
+                      console.log("true is hit")
                       const updatedArray = randomSheetArray.map((item, index) => {
                         // Check if the index matches the index of the item to update
                         if (index === i) {
@@ -174,6 +180,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
                       setSubmitResult(submitResult + 1);
             }
             else {
+              console.log("false is hit")
               const updatedArray = randomSheetArray.map((item, index) => {
                 if (index === i) {
                     // If the properties match, return a new object with the updated 
@@ -182,6 +189,7 @@ const RandomSheets = ({getRandomNumber, showRandomSheets, totalSheets,  setShowR
                 // If the properties don't match, return the original object
                 return item;
             });
+            console.log("updated array in false", updatedArray)
             setRandomSheetArray(updatedArray);
             }
         }
@@ -247,6 +255,7 @@ const handleCloseSolutionModal = (index) => {
  const handleRandomSheets = (sheets) => {
 
    const updatedArray= [];
+   const updatedDivisionInputs = [];
 
    const getRandomOperation = () => {
     let randomNum;
@@ -271,7 +280,7 @@ const handleCloseSolutionModal = (index) => {
     const numerator2 = getRandomNumber(inputRange.min, inputRange.max);
     const denominator2 = getRandomNumber(inputRange.min, inputRange.max);
 
-      // var numerator1 = getRandomNumber(inputRange.min, inputRange.max);
+
       // var denominator1 = getRandomNumber(inputRange.min, inputRange.max);
       // var numerator2 = getRandomNumber(inputRange.min, inputRange.max);
       // var denominator2 = getRandomNumber(inputRange.min, inputRange.max);
@@ -330,43 +339,51 @@ const handleCloseSolutionModal = (index) => {
 
     });
 
+    updatedDivisionInputs.push({
+      ind: i,
+      divisionNum1:'',
+      divisionDenom1:'',
+      divisionNum2:'',
+      divisionDenom2:'',
+      sign:''
+        })
+
   }
 
   setRandomSheetArray(updatedArray)
+  setDivisionInputs(updatedDivisionInputs)
+  console.log("checking divisioninputs in ", divisionInputs)
 } 
 
-// const handleArrayInputChange = (index, field, value) => {
-//   const newData = [...randomSheetArray];
-//   newData[index][field] = parseInt(value);
-//   setRandomSheetArray(newData);
+const handleDivisionInputsChange = (index, field, value) => {
+  const updatedInputs = [...divisionInputs];
+  updatedInputs[index] = {
+    ...updatedInputs[index],
+    [field]: value
+  };
+  setDivisionInputs(updatedInputs);
+};
+
+// const handleDivisionInputsChange = (index, field, event) => {
+//   // Make a copy of the array
+//   const updatedInputs = [...divisionInputs];
+
+//   // Update the field in the object at the given index
+//   updatedInputs[index] = {
+//     ...updatedInputs[index],
+//     [field]: event.target.value
+//   };
+
+//   // Update the state
+//   setDivisionInputs(updatedInputs);
 // };
-
-
-// const handleSubmit = (randomNum) => {
-//   const checkDeno = randomNum.denominator1 * randomNum.denominator2;
-
-//   const checkNum = (randomNum.numerator1*randomNum.denominator2) + (randomNum.numerator2*randomNum.denominator1);
-
-//   const checkResult = checkNum/checkDeno
-
-//   const inputResult = randomNum.inputNum/randomNum.inputDenom;
-
-//   if(checkResult===inputResult){
-//     setArrayResult(true)
-//   }
-//   else{
-//     setArrayResult(false)
-//   }
-
-//   setShowCheckModal(true)
-// }
 
  if(showRandomSheets)
 
   return  (
     <div className='flex flex-col justify-center mt-6 rounded-md '>
         <div className='px-auto flex flex-col  gap-4 bg-gray-50'>
-             
+                     <button onClick={()=>console.log(randomSheetArray)}>show</button>
                       {randomSheetArray.map((randomNums, index)=> (
                         <div className='px-[40px]  pt-6 pb-4  mt-6 mx-4 bg-white rounded-md'>
                           <div className='bg-gray-100 w-10 h-10 rounded-full flex items-center justify-center'><h2 className='text-gray-500 italic text-[18px]' >{index+1}</h2></div>
@@ -459,7 +476,7 @@ const handleCloseSolutionModal = (index) => {
                                                     <tbody className=''>
                                                         <tr>
                                                         <td className="text-center"> {/* Add a td element to center the input */}
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, sign: e.target.value})} id='sign' className='input-div digit-input text-center'   />
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'sign', e.target.value)} id='sign' className='input digit-input'/>
                                                         </td>
                                                       </tr>
                                                     </tbody>
@@ -470,13 +487,13 @@ const handleCloseSolutionModal = (index) => {
                                                   <table>
                                                     <tbody>
                                                         <tr className=''>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, numerator2: e.target.value})} id='divisionNum2' className='input digit-input'/>
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'divisionNum2', parseInt(e.target.value))} id='divisionNum2' className='input digit-input'/>
                                                         </tr>
                                                         <tr className='flex items-center mt-4 mb-4'>
                                                             <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
                                                         </tr>
                                                         <tr>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, denominator2: e.target.value})} id='divisionDeno2' className='input digit-input '/>
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'divisionDenom2', parseInt(e.target.value))} id='divisionDenom2' className='input digit-input'/>
                                                         </tr>
                                                     </tbody>
                                                   </table>
@@ -547,19 +564,20 @@ const handleCloseSolutionModal = (index) => {
                                               <td className='= px-6'>
                                                 <tr>=</tr>
                                               </td>
-                        {/* ================================================== input side ========================================== */}
+        {/* ================================================== input side ========================================== */}
                                               <td className='inputs px-4 flex flex-row'>
                                               <td className='first-col px-4'>
                                                   <table>
                                                     <tbody>
                                                         <tr className=''>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, numerator1: e.target.value})} id='divisionNum1' className='input digit-input'/>
+                                                          <input onChange={(e)=>handleDivisionInputsChange(index, 'divisionNum1', parseInt(e.target.value))} id='divisionNum1' className='input digit-input'/>
                                                         </tr>
                                                         <tr className='flex items-center mt-4 mb-4'>
                                                             <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
                                                         </tr>
                                                         <tr>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, denominator1: e.target.value})} id='divisionDeno1' className='input digit-input '/>
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'divisionDenom1', parseInt(e.target.value))} id='divisionDenom1' className='input digit-input'/>
+                                                        
                                                         </tr>
                                                     </tbody>
                                                   </table>
@@ -570,7 +588,7 @@ const handleCloseSolutionModal = (index) => {
                                                     <tbody className=''>
                                                         <tr>
                                                         <td className="text-center"> {/* Add a td element to center the input */}
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, sign: e.target.value})} id='divisionSign' className='input-div digit-input text-center'   />
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'sign', e.target.value)} id='divisionSign' className='input digit-input'/>
                                                         </td>
                                                       </tr>
                                                     </tbody>
@@ -581,13 +599,14 @@ const handleCloseSolutionModal = (index) => {
                                                   <table>
                                                     <tbody>
                                                         <tr className=''>
-                                                          <input required onChange={(e)=>setDivisionInputs({...divisionInputs, numerator2: e.target.value})} id='divisionNum2' className='input digit-input'/>
+                                                        <input  onChange={(e)=>handleDivisionInputsChange(index, 'divisionNum2', parseInt(e.target.value))} id='divisionNum2' className='input digit-input'/>
                                                         </tr>
+                                                      
                                                         <tr className='flex items-center mt-4 mb-4'>
                                                             <div class="border-t border-2  border-gray-500   w-16 mx-auto"></div>
                                                         </tr>
                                                         <tr>
-                                                          <input onChange={(e)=>setDivisionInputs({...divisionInputs, denominator2: e.target.value})} id='divisionDeno2' className='input digit-input '/>
+                                                        <input onChange={(e)=>handleDivisionInputsChange(index, 'divisionDenom2', parseInt(e.target.value))} id='divisionDenom2' className='input digit-input'/>
                                                         </tr>
                                                     </tbody>
                                                   </table>
@@ -795,7 +814,7 @@ const handleCloseSolutionModal = (index) => {
                          <button onClick={()=>{
                           setSubmitted(true)
                           setShowSubmitResultModal(true)
-                          }} disabled={objectSubmitCount<totalSheets}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit</button>
+                          }} disabled={objectSubmitCount<totalSheets}  className=' w-[60%] rounded-[5px] py-1 border border-1 border-gray-400  hover:text-white hover:bg-green-800'>Submit your sheets</button>
                       </div>
               </div>
               

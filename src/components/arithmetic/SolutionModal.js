@@ -1607,6 +1607,7 @@ const gcd = findGCD(Math.abs(numerator), Math.abs(denominator));
     // Simplify the fraction by dividing both numerator and denominator by their GCD
     let simplifiedNumerator = numerator / gcd;
     let simplifiedDenominator = denominator / gcd;
+    console.log("simplify at tope", simplifiedNumerator, simplifiedDenominator)
 
     if(numerator===simplifiedNumerator && denominator===simplifiedDenominator) return null;
 

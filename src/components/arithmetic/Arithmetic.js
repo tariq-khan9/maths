@@ -235,7 +235,7 @@ const Arithmetic = () => {
 
   const handleSetTotalSheets = (value) => {
     const intValue = parseInt(value);
-  if (!isNaN(intValue) && intValue >= 6 && intValue <= 20 ) {
+  if (!isNaN(intValue) && intValue >= 3 && intValue <= 20 ) {
     setTotalSheets(intValue);
     setShowRandomSheets(true)
   } else {
@@ -814,7 +814,7 @@ const Arithmetic = () => {
        
         </div>
         {totalSheets>2 && 
-          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms} divisionInputs={divisionInputs} setDivisionInputs={setDivisionInputs}  difficulty={difficulty}  handleCheck={handleCheck}/>
+          <RandomSheets getRandomNumber={getRandomNumber} showRandomSheets={showRandomSheets}  operation={operation} totalSheets={totalSheets} inputRange={inputRange} additionInputs={additionInputs} setAdditionInputs={setAdditionInputs} sameDenoms={sameDenoms}   difficulty={difficulty}  handleCheck={handleCheck}/>
         }
         
 
